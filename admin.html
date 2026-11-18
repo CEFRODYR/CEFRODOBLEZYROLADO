@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>Panel de administración · CEFRO</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#1b1f24;--mu:#667;--pr:#c8281e;--bd:#dde0e5}
+@media(prefers-color-scheme:dark){:root{--bg:#14161a;--card:#1e2126;--tx:#eceef1;--mu:#9aa;--bd:#33373d}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+header{background:var(--pr);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+header h1{font-size:18px;margin:0}header a,header button{color:#fff}
+main{max-width:980px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:16px}
+button,.btn{background:var(--pr);color:#fff;border:0;border-radius:8px;padding:9px 16px;font:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+button.g{background:transparent;border:1px solid currentColor}button:disabled{opacity:.5}
+input,select,textarea{font:inherit;width:100%;padding:9px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx)}
+textarea{min-height:70px;resize:vertical}label{display:block;font-weight:600;margin:10px 0 4px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}.tabs button{background:var(--card);color:var(--tx);border:1px solid var(--bd)}.tabs button.on{background:var(--pr);color:#fff;border-color:var(--pr)}
+.drop{border:2px dashed var(--bd);border-radius:12px;padding:30px;text-align:center;color:var(--mu);cursor:pointer}.drop.over{border-color:var(--pr);background:rgba(200,40,30,.07)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:14px}
+.it{border:1px solid var(--bd);border-radius:10px;overflow:hidden;background:var(--bg);font-size:12px}
+.it img,.it video,.it .vid{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#000}
+.it div{padding:6px;word-break:break-all}.it button{width:100%;border-radius:0;padding:6px}
+.msg{padding:10px;border-radius:8px;margin:10px 0;background:rgba(40,160,80,.15)}.msg.e{background:rgba(200,40,30,.15)}
+.f{border-left:3px solid var(--pr);padding-left:10px;margin:12px 0}.f small{color:var(--mu)}
+ol{padding-left:20px}.hide{display:none}
+</style></head><body>
+<header><h1>Panel de administración · CEFRO Doblez y Rolado</h1><span><a href="index.html">Ver página</a> · <button class="g" id="out">Salir</button></span></header>
+<main>
+<div id="login" class="card">
+<h2>Ingresar</h2>
+<p>Pegue aquí su <b>clave de acceso (token)</b> de GitHub. Se guarda solo en este navegador.</p>
+<ol><li>Abra <a href="https://github.com/settings/personal-access-tokens/new" target="_blank">github.com/settings/personal-access-tokens/new</a></li>
+<li>Nombre: <i>panel-cefro</i>. Expiración: la más larga (1 año).</li>
+<li>En <b>Repository access</b> elija <i>Only select repositories</i> → <b>cefrodoblezyrolado</b>.</li>
+<li>En <b>Permissions → Repository permissions → Contents</b> elija <i>Read and write</i>.</li>
+<li>Pulse <i>Generate token</i>, copie el texto y péguelo abajo.</li></ol>
+<input id="tok" type="password" placeholder="github_pat_..."><p><button id="in">Entrar</button></p><div id="lm"></div>
+</div>
+<div id="app" class="hide">
+<div class="tabs"><button class="on" data-t="media">📷 Fotos y videos</button><button data-t="text">✏️ Textos</button></div>
+<div id="media">
+<div class="card"><label>¿En qué sección?</label>
+<select id="folder"><option value="maquinaria">Maquinaria (inicio)</option><option value="doblez">Doblez de tubo</option><option value="rolado">Rolado de tubo</option><option value="soldadura">Soldadura</option><option value="obras">Nuestras obras</option><option value="videos">Videos (inicio)</option></select>
+<div class="drop" id="drop" style="margin-top:12px">Arrastre aquí fotos o videos, o pulse para elegir<input type="file" id="file" multiple accept="image/*,video/mp4" class="hide"></div>
+<div id="um"></div></div>
+<div class="card"><b id="ft"></b><div class="grid" id="list"></div></div>
+</div>
+<div id="text" class="hide"><div class="card"><label>¿Qué página?</label>
+<select id="page"><option value="index.html">Inicio</option><option value="doblez-de-tubo.html">Doblez de tubo</option><option value="rolado-de-tubo.html">Rolado de tubo</option><option value="soldadura.html">Soldadura</option><option value="obras.html">Nuestras obras</option></select>
+<div id="fields"></div><p><button id="save" class="hide">Guardar cambios</button></p><div id="tm"></div></div></div>
+</div></main>
+<script>
+var REPO='CEFRODYR/cefrodoblezyrolado',BR='main',API='https://api.github.com/repos/'+REPO+'/contents/';
+var $=function(i){return document.getElementById(i)},TK='';
+try{TK=localStorage.getItem('cefro_tk')||''}catch(e){}
+function gh(path,opt){opt=opt||{};opt.headers={Authorization:'Bearer '+TK,Accept:'application/vnd.github+json'};
+return fetch(API+path,opt).then(function(r){if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){throw new Error(r.status+' '+(j.message||''))});return r.json()})}
+function msg(id,t,e){$(id).innerHTML='<div class="msg'+(e?' e':'')+'">'+t+'</div>'}
+function b64(s){return btoa(unescape(encodeURIComponent(s)))}
+function start(){gh('imagenes?ref='+BR).then(function(){$('login').classList.add('hide');$('app').classList.remove('hide');loadList();loadFields()}).catch(function(e){$('login').classList.remove('hide');msg('lm','No se pudo entrar: '+e.message+'. Revise el token y sus permisos.',1)})}
+$('in').onclick=function(){TK=$('tok').value.trim();try{localStorage.setItem('cefro_tk',TK)}catch(e){}start()};
+$('out').onclick=function(){try{localStorage.removeItem('cefro_tk')}catch(e){}location.reload()};
+if(TK)start();
+document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on',x===b)});$('media').classList.toggle('hide',b.dataset.t!='media');$('text').classList.toggle('hide',b.dataset.t!='text')}});
+/* ---- media ---- */
+var IMG=/\.(jpe?g|png|webp|gif)$/i,VID=/\.(mp4|webm|mov)$/i;
+function loadList(){var f=$('folder').value;$('ft').textContent='Contenido de «'+$('folder').selectedOptions[0].text+'»';$('list').innerHTML='Cargando…';
+gh('imagenes/'+f+'?ref='+BR+'&t='+Date.now()).then(function(a){var h='';a.forEach(function(x){if(x.type!='file')return;var u=x.download_url;
+if(IMG.test(x.name))h+='<div class="it"><img src="'+u+'"><div>'+x.name+'</div><button data-p="'+x.path+'" data-s="'+x.sha+'">Borrar</button></div>';
+else if(VID.test(x.name))h+='<div class="it"><div class="vid" style="display:flex;align-items:center;justify-content:center;color:#fff;font-size:34px">🎬</div><div>'+x.name+'</div><button data-p="'+x.path+'" data-s="'+x.sha+'">Borrar</button></div>'});
+$('list').innerHTML=h||'<p>Aún no hay archivos.</p>';
+$('list').querySelectorAll('button').forEach(function(b){b.onclick=function(){if(!confirm('¿Borrar '+b.dataset.p+'?'))return;
+gh(b.dataset.p,{method:'DELETE',body:JSON.stringify({message:'Borra '+b.dataset.p,sha:b.dataset.s,branch:BR})}).then(loadList).catch(function(e){alert(e.message)})}})}).catch(function(e){$('list').innerHTML='Error: '+e.message})}
+$('folder').onchange=loadList;
+$('drop').onclick=function(){$('file').click()};
+$('drop').ondragover=function(e){e.preventDefault();this.classList.add('over')};$('drop').ondragleave=function(){this.classList.remove('over')};
+$('drop').ondrop=function(e){e.preventDefault();this.classList.remove('over');up(e.dataTransfer.files)};$('file').onchange=function(){up(this.files)};
+function slug(n){var m=n.match(/\.[^.]+$/),ext=m?m[0].toLowerCase():'';return n.replace(/\.[^.]+$/,'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+ext}
+function shrink(file){return new Promise(function(res){if(!/^image\/(jpeg|png|webp)/.test(file.type))return res({blob:file,name:file.name});
+var im=new Image();im.onload=function(){var s=Math.min(1,1400/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+c.toBlob(function(b){res({blob:b,name:file.name.replace(/\.[^.]+$/,'.jpg')})},'image/jpeg',.82)};im.onerror=function(){res({blob:file,name:file.name})};im.src=URL.createObjectURL(file)})}
+function toB64(blob){return new Promise(function(r){var fr=new FileReader();fr.onload=function(){r(fr.result.split(',')[1])};fr.readAsDataURL(blob)})}
+async function up(files){var f=$('folder').value,ok=0,out='';
+for(var i=0;i<files.length;i++){var fl=files[i];msg('um','Subiendo '+(i+1)+' de '+files.length+': '+fl.name+'…');
+try{if(fl.size>90e6)throw new Error('pesa más de 90 MB, comprímalo');
+var r=await shrink(fl),name=slug(r.name),path='imagenes/'+f+'/'+name,sha;
+try{sha=(await gh(path+'?ref='+BR)).sha}catch(e){}
+var body={message:'Sube '+path,content:await toB64(r.blob),branch:BR};if(sha)body.sha=sha;
+await gh(path,{method:'PUT',body:JSON.stringify(body)});ok++}catch(e){out+='<br>❌ '+fl.name+': '+e.message}}
+msg('um','✅ '+ok+' archivo(s) subido(s). Aparecen en la página en 1–3 minutos.'+out,out?1:0);loadList()}
+/* ---- textos ---- */
+var DOC=null,SHA='',EL=[];
+var SEL='.slide h1,.slide p,.phead h1,.phead p,main h2,main h3,main p,.contact li span,.about li,.card p';
+function loadFields(){var p=$('page').value;$('fields').innerHTML='Cargando…';$('save').classList.add('hide');$('tm').innerHTML='';
+gh(p+'?ref='+BR+'&t='+Date.now()).then(function(j){SHA=j.sha;var html=decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
+DOC=new DOMParser().parseFromString(html,'text/html');EL=[];
+DOC.querySelectorAll(SEL).forEach(function(e){if(e.closest('.auto,nav,footer,.ph')||e.querySelector('div,section'))return;if(!e.textContent.trim())return;if(EL.indexOf(e)<0)EL.push(e)});
+$('fields').innerHTML=EL.map(function(e,i){var t=e.tagName.toLowerCase();return '<div class="f"><small>'+({h1:'Título principal',h2:'Título de sección',h3:'Subtítulo',p:'Texto'}[t]||'Dato')+'</small><textarea data-i="'+i+'">'+e.innerHTML.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</textarea></div>'}).join('');
+$('fields').querySelectorAll('textarea').forEach(function(t){t.rows=Math.min(6,Math.max(1,Math.ceil(t.value.length/90)));t.style.minHeight='0'});
+$('save').classList.remove('hide')}).catch(function(e){$('fields').innerHTML='Error: '+e.message})}
+$('page').onchange=loadFields;
+$('save').onclick=function(){$('fields').querySelectorAll('textarea').forEach(function(t){var e=EL[+t.dataset.i],v=t.value.replace(/&lt;/g,'<').replace(/&amp;/g,'&');v=t.value;if(e.innerHTML!==v)e.innerHTML=v});
+var html='<!doctype html>\n'+DOC.documentElement.outerHTML;
+gh($('page').value,{method:'PUT',body:JSON.stringify({message:'Edita textos de '+$('page').value,content:b64(html),sha:SHA,branch:BR})}).then(function(){msg('tm','✅ Guardado. Se verá en la página en 1–3 minutos.');loadFields()}).catch(function(e){msg('tm','Error: '+e.message,1)})};
+</script></body></html>
