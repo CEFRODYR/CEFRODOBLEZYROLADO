@@ -21,7 +21,8 @@ document.querySelectorAll('.auto').forEach(function(box){
    if(type==='video'&&VID.test(n))items.push({n:n,s:'imagenes/'+folders[i]+'/'+encodeURIComponent(n)});
   });});
   items.sort(function(a,b){return a.n.localeCompare(b.n,undefined,{numeric:true})});
-  if(!items.length){box.innerHTML='<div class="ph" style="grid-column:1/-1">'+esc(box.getAttribute('data-empty')||'')+'</div>';return;}
+  if(!items.length){if(box.getAttribute('data-reveal')){var se=box.closest('section');if(se)se.style.display='none';return;}box.innerHTML='<div class="ph" style="grid-column:1/-1">'+esc(box.getAttribute('data-empty')||'')+'</div>';return;}
+  if(box.getAttribute('data-reveal')){var se2=box.closest('section');if(se2)se2.style.display='';}
   box.innerHTML=items.map(function(it){
    if(type==='video')return '<video controls preload="metadata" playsinline src="'+it.s+'"></video>';
    var c=human(it.n);
