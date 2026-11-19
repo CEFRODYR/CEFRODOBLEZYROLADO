@@ -83,6 +83,15 @@ a.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.14)}
 .fact span{color:#c7d3e2;font-size:15px}
 .gal{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
 .gal img,.gal video{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:#000}
+.cx{display:grid;gap:28px;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));align-items:start}.cx>*{min-width:0}
+.cinfo{display:grid;gap:14px}.cc{min-width:0;overflow-wrap:anywhere;display:flex;gap:16px;background:var(--card,#fff);border:1px solid var(--line);border-radius:14px;padding:18px}
+.ci{font-size:26px;width:48px;height:48px;border-radius:12px;background:rgba(232,137,12,.14);display:flex;align-items:center;justify-content:center;flex:none}
+.cc>div:last-child{min-width:0}.cc h3{font:600 19px Oswald,sans-serif;text-transform:uppercase;color:var(--blue);margin:0 0 4px}.cc p{margin:0 0 6px}.cc .num{font-weight:700;font-size:20px;margin-top:6px}
+.cbs{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 6px}.cb{display:inline-block;padding:8px 16px;border-radius:999px;border:1.5px solid var(--blue);color:var(--blue);font-weight:600;text-decoration:none;font-size:15px}.cb:hover{background:var(--blue);color:#fff}
+.cb.wa3{background:#25d366;border-color:#25d366;color:#06240f}.cb.wa3:hover{background:#1fb457;color:#06240f}
+.cright{display:grid;gap:16px}.cright .map{width:100%;height:280px;border:0;border-radius:14px}
+.cot{background:var(--navy);color:#fff;border-radius:14px;padding:20px}.cot h3{font:600 22px Oswald,sans-serif;text-transform:uppercase;margin:0 0 4px}.cot p{margin:0 0 10px;color:#c7d3e2}
+.cot label{display:block;font-weight:600;font-size:14px;margin-top:10px}.cot input,.cot select,.cot textarea{width:100%;margin-top:4px;padding:11px;border-radius:8px;border:0;font:inherit;color:#111}.cot .btn{margin-top:14px;width:100%;border:0;cursor:pointer;font-size:16px}
 .contact{display:grid;gap:36px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .contact ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
 .contact li{display:flex;gap:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
