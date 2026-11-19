@@ -58,8 +58,6 @@ section.alt{background:var(--alt)}
 .head h2{font-size:clamp(26px,4vw,40px)}
 .head p{color:var(--muted);max-width:600px;margin:12px auto 0}
 .grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-.soc{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:-6px 0 26px}.soc a{display:inline-flex;gap:8px;align-items:center;padding:8px 16px;border-radius:999px;border:1.5px solid var(--blue);color:var(--blue);font-weight:600;text-decoration:none;font-size:15px;background:#fff}.soc a:hover{background:var(--blue);color:#fff}
-.grid.works{grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))}@media(min-width:900px){.grid.works{grid-template-columns:repeat(3,1fr)}}.card.work .pic{aspect-ratio:4/3}.card.work h3{font-size:19px}.card.work p{font-size:15px}.card.work .more{text-decoration:none}
 .card{display:block;text-decoration:none;background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:transform .15s,box-shadow .15s}
 a.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.14)}
 .card .pic{aspect-ratio:16/10;background:linear-gradient(rgba(13,23,38,.55),rgba(13,23,38,.55)),repeating-linear-gradient(45deg,#2a3f5d 0 14px,#1a2a42 14px 28px);display:flex;align-items:center;justify-content:center;color:#fff;font:700 22px Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;padding:10px;text-align:center}
