@@ -141,7 +141,8 @@ document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle
 /* ---------- visitas (GoatCounter) ---------- */
 var GC='https://cefrodyr.goatcounter.com/api/v0/',GT='',GTMR=null;
 try{GT=localStorage.getItem('cefro_gc')||''}catch(e){}
-function gcg(p){return fetch(GC+p,{headers:{Authorization:'Bearer '+GT,Accept:'application/json'}}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+var GQ=Promise.resolve();
+function gcg(p){var run=GQ.then(function(){return fetch(GC+p,{headers:{Authorization:'Bearer '+GT,Accept:'application/json'}})}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()});GQ=run.catch(function(){}).then(function(){return new Promise(function(ok){setTimeout(ok,330)})});return run}
 function iso(d){return d.toISOString().replace(/\.\d+Z$/,'Z')}
 function srcName(n){n=(n||'').toLowerCase();if(!n)return'Directo';
 if(/google\./.test(n))return'Google';if(/facebook|fb\.com|fb\.me/.test(n))return'Facebook';if(/instagram/.test(n))return'Instagram';if(/tiktok/.test(n))return'TikTok';if(/whatsapp|wa\.me/.test(n))return'WhatsApp';if(/bing\.|duckduckgo|yahoo|ecosia/.test(n))return'Otros buscadores';if(/cefrodr\.com/.test(n))return null;return'Otros sitios'}
