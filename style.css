@@ -70,6 +70,7 @@ a.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.14)}
 .card h3{font-size:21px;margin-bottom:8px}
 .card p{margin:0;color:var(--muted)}
 .card .more{display:inline-block;margin-top:12px;font-weight:700;color:var(--blue)}
+.igg{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.igg iframe{width:100%;height:600px;border:1px solid var(--line);border-radius:12px;background:#fff}
 .vid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
 .vid iframe,.vid video{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000}
 .vid video{max-height:75vh;width:auto;max-width:100%;margin:0 auto;display:block;aspect-ratio:auto}
