@@ -155,7 +155,7 @@ function iso(d){return d.toISOString().replace(/\.\d+Z$/,'Z')}
 function srcName(n){n=(n||'').toLowerCase();if(!n)return'Directo';
 if(/google\./.test(n))return'Google';if(/facebook|fb\.com|fb\.me/.test(n))return'Facebook';if(/instagram/.test(n))return'Instagram';if(/tiktok/.test(n))return'TikTok';if(/whatsapp|wa\.me/.test(n))return'WhatsApp';if(/bing\.|duckduckgo|yahoo|ecosia/.test(n))return'Otros buscadores';if(/cefrodr\.com/.test(n))return null;return'Otros sitios'}
 function visOpen(){if(!GT){$('vsetup').classList.remove('hide');$('vmain').classList.add('hide');return}
-$('vsetup').classList.add('hide');$('vmain').classList.remove('hide');visLoad();clearInterval(GTMR);GTMR=setInterval(function(){if(!$('vis').classList.contains('hide'))visLoad()},30000)}
+$('vsetup').classList.add('hide');$('vmain').classList.remove('hide');visLoad();clearInterval(GTMR);GTMR=setInterval(function(){if(!$('vis').classList.contains('hide')&&!document.hidden)visLoad(true)},60000)}
 var VPER=30,VBUSY=false;
 function rows(el,list,fmt,icon){var all=list.reduce(function(a,x){return a+x[1]},0)||1,mx=list.length?list[0][1]:1;
 $(el).innerHTML=list.length?list.map(function(x){return '<div class="rw"><div><span>'+((icon&&icon[x[0]])?icon[x[0]]+' ':'')+esc(fmt?fmt(x[0]):x[0])+'</span><b>'+x[1]+' <span class="tip">('+Math.round(x[1]*100/all)+'%)</span></b></div><div class="rb"><i style="width:'+Math.max(3,Math.round(x[1]*100/mx))+'%"></i></div></div>'}).join(''):'<p class="tip">Todavía no hay datos.</p>'}
@@ -164,7 +164,7 @@ function pad(n){return n<10?'0'+n:''+n}
 function dkey(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
 var SZ=[[/^phones$/i,'Celulares'],[/large phones/i,'Celulares grandes'],[/tablets/i,'Tablets y laptops pequeñas'],[/larger than/i,'Pantallas grandes'],[/computer monitors/i,'Computadoras'],[/unknown/i,'Desconocido']];
 function szName(n){for(var i=0;i<SZ.length;i++)if(SZ[i][0].test(n))return SZ[i][1];return n||'Desconocido'}
-async function visLoad(){if(VBUSY)return;VBUSY=true;try{
+async function visLoad(light){if(VBUSY)return;VBUSY=true;try{
 var now=new Date(),d0=new Date(now);d0.setHours(0,0,0,0);var s30=new Date(d0);s30.setDate(s30.getDate()-29);var sp=new Date(d0);sp.setDate(sp.getDate()-(VPER-1));var end=iso(now);
 var tj=await gcg('stats/total?start='+iso(s30)+'&end='+end);var st=tj.stats||[],by={};st.forEach(function(x){by[x.day]=x});
 function sum(n){var t=0;for(var i=0;i<n;i++){var d=new Date(d0);d.setDate(d.getDate()-i);var x=by[dkey(d)];if(x)t+=x.daily||0}return t}
@@ -181,6 +181,7 @@ $('vdaysum').textContent=best&&best[1]?'Mejor día: '+best[0].toLocaleDateString
 var hh=(today&&today.hourly)||[],hm=Math.max.apply(null,hh.concat([1]));
 $('vhour').innerHTML=Array.apply(null,Array(24)).map(function(_,h){var v=hh[h]||0;return '<div class="'+(v?'':'z')+'" style="height:'+Math.max(2,Math.round(v*100/hm))+'%" title="'+pad(h)+':00 — '+v+' visitas">'+(h%3==0?'<i>'+pad(h)+'h</i>':'')+'</div>'}).join('');
 var bh=hh.indexOf(Math.max.apply(null,hh));$('vhoursum').textContent=(hh.length&&Math.max.apply(null,hh)>0)?'Hora con más visitas hoy: '+pad(bh)+':00 ('+hh[bh]+').':'Hoy todavía no hay visitas.';
+if(light){$('vupd').textContent='· actualizado '+new Date().toLocaleTimeString('es-PE');return}
 var q='&start='+iso(sp)+'&end='+end;$('vperl').textContent='(últimos '+VPER+' días)';
 // origenes
 var rj=await gcg('stats/toprefs?limit=100'+q),det=agg(rj.stats||[]),map={},tot=0,oth=[];
@@ -198,9 +199,9 @@ var yj=await gcg('stats/systems?limit=10'+q);rows('vsys',agg(yj.stats||[]).slice
 var bj=await gcg('stats/browsers?limit=10'+q);rows('vbro',agg(bj.stats||[]).slice(0,8));
 var lj=await gcg('stats/locations?limit=10'+q);rows('vloc',agg(lj.stats||[]).slice(0,8));
 $('vupd').textContent='· actualizado '+new Date().toLocaleTimeString('es-PE')
-}catch(e){$('vsrc').innerHTML='<div class="msg e">No se pudieron leer las visitas ('+esc(String(e.message||e))+'). Revise el token o abra el panel de GoatCounter.</div>'}finally{VBUSY=false}}
+}catch(e){$('vsrc').innerHTML='<div class="msg e">No se pudieron leer las visitas ('+esc(String(e.message||e))+'). Si dice «Failed to fetch», GoatCounter puede haber bloqueado las consultas por unos minutos: espere 10 minutos y recargue. Si dice 401 o 403, revise el token.</div>'}finally{VBUSY=false}}
 document.querySelectorAll('#vper button').forEach(function(b){b.onclick=function(){VPER=parseInt(b.dataset.d);document.querySelectorAll('#vper button').forEach(function(x){x.classList.toggle('on',x===b)});visLoad()}});
-$('gin').onclick=function(){GT=$('gtok').value.trim();if(!GT)return;gcg('stats/total').then(function(){try{localStorage.setItem('cefro_gc',GT)}catch(e){}visOpen()}).catch(function(e){GT='';msg('gm','No se pudo conectar ('+esc(String(e.message))+'). Revise que el token sea de lectura y esté bien copiado.','e')})};
+$('gin').onclick=function(){GT=$('gtok').value.trim();if(!GT)return;gcg('stats/total').then(function(){try{localStorage.setItem('cefro_gc',GT)}catch(e){}visOpen()}).catch(function(e){GT='';msg('gm','No se pudo conectar ('+esc(String(e.message))+'). Si dice «Failed to fetch», GoatCounter bloqueó las consultas por unos minutos por exceso de intentos: espere 10 minutos, recargue y pulse Conectar una sola vez. Si dice 401 o 403, revise que el token sea de lectura y esté bien copiado.','e')})};
 $('gout').onclick=function(){try{localStorage.removeItem('cefro_gc')}catch(e){}GT='';clearInterval(GTMR);visOpen()};
 
 /* ---------- fotos y videos ---------- */
