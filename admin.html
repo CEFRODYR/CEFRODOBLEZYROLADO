@@ -44,6 +44,7 @@ label{display:block;font-weight:600;margin:10px 0 4px}
 <button class="on" data-t="media">📷 Fotos y videos</button>
 <button data-t="text">✏️ Editar página</button>
 <button data-t="data">📞 Datos de contacto</button>
+<button data-t="vis">📊 Visitas</button>
 </div>
 
 <!-- FOTOS -->
@@ -56,6 +57,25 @@ label{display:block;font-weight:600;margin:10px 0 4px}
 <p class="tip">Las fotos se reducen solas para que la página cargue rápido. Videos: hasta 90 MB. Aparecen en la página en 1 a 3 minutos.</p>
 </div>
 <div class="card"><h2 id="ft"></h2><div class="grid" id="list"></div></div>
+</div>
+
+<!-- VISITAS -->
+<div id="vis" class="hide">
+<div id="vsetup" class="card hide">
+<h2>Conectar el contador de visitas</h2>
+<p class="s">Pegue su <b>token de lectura</b> de GoatCounter. Se guarda solo en este navegador.</p>
+<input id="gtok" type="password" placeholder="Token de GoatCounter" autocomplete="off"><p><button id="gin">Conectar</button></p><div id="gm"></div>
+<details><summary>¿Cómo obtengo el token?</summary><ol><li>Abra <a href="https://cefrodyr.goatcounter.com/user/api" target="_blank">cefrodyr.goatcounter.com/user/api</a> e ingrese.</li><li>Pulse <b>Create new token</b>.</li><li>Marque solo el permiso de <b>leer estadísticas</b> (no escritura).</li><li>Copie el token y péguelo arriba.</li></ol></details>
+</div>
+<div id="vmain" class="hide">
+<div class="card"><h2>Visitas de su página <span class="tip" id="vupd"></span></h2>
+<div class="two" style="grid-template-columns:repeat(3,1fr)"><div><b id="v1" style="font-size:30px">–</b><br><span class="tip">Hoy</span></div><div><b id="v7" style="font-size:30px">–</b><br><span class="tip">Últimos 7 días</span></div><div><b id="v30" style="font-size:30px">–</b><br><span class="tip">Últimos 30 días</span></div></div>
+<p class="tip">Se actualiza solo cada 30 segundos. Cuenta visitas desde que se conectó el contador.</p></div>
+<div class="card"><h2>¿Cómo los encontraron? <span class="tip">(últimos 30 días)</span></h2><div id="vsrc"></div>
+<p class="tip">«Directo» incluye a quienes llegan desde WhatsApp, Instagram o TikTok cuando esas apps no informan de dónde vienen, y a quienes escriben la dirección.</p></div>
+<div class="card"><h2>Páginas más vistas</h2><div id="vpages"></div></div>
+<p class="tip"><a href="https://cefrodyr.goatcounter.com" target="_blank">Abrir el panel completo de GoatCounter ↗</a> &nbsp; <button class="g" id="gout">Desconectar</button></p>
+</div>
 </div>
 
 <!-- EDITOR VISUAL -->
@@ -116,7 +136,30 @@ $('out').onclick=function(){try{localStorage.removeItem('cefro_tk')}catch(e){}lo
 if(TK)start();
 document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){
 if(DIRTY&&b.dataset.t!='text'&&!confirm('Tiene cambios sin guardar en el editor. ¿Salir sin guardar?'))return;
-document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on',x===b)});['media','text','data'].forEach(function(t){$(t).classList.toggle('hide',b.dataset.t!=t)})}});
+document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on',x===b)});['media','text','data','vis'].forEach(function(t){$(t).classList.toggle('hide',b.dataset.t!=t)});if(b.dataset.t=='vis')visOpen()}});
+
+/* ---------- visitas (GoatCounter) ---------- */
+var GC='https://cefrodyr.goatcounter.com/api/v0/',GT='',GTMR=null;
+try{GT=localStorage.getItem('cefro_gc')||''}catch(e){}
+function gcg(p){return fetch(GC+p,{headers:{Authorization:'Bearer '+GT,Accept:'application/json'}}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+function iso(d){return d.toISOString().replace(/\.\d+Z$/,'Z')}
+function srcName(n){n=(n||'').toLowerCase();if(!n)return'Directo';
+if(/google\./.test(n))return'Google';if(/facebook|fb\.com|fb\.me/.test(n))return'Facebook';if(/instagram/.test(n))return'Instagram';if(/tiktok/.test(n))return'TikTok';if(/whatsapp|wa\.me/.test(n))return'WhatsApp';if(/bing\.|duckduckgo|yahoo|ecosia/.test(n))return'Otros buscadores';if(/cefrodr\.com/.test(n))return null;return'Otros sitios'}
+function visOpen(){if(!GT){$('vsetup').classList.remove('hide');$('vmain').classList.add('hide');return}
+$('vsetup').classList.add('hide');$('vmain').classList.remove('hide');visLoad();clearInterval(GTMR);GTMR=setInterval(function(){if(!$('vis').classList.contains('hide'))visLoad()},30000)}
+function visLoad(){var now=new Date(),d0=new Date(now);d0.setHours(0,0,0,0);var d7=new Date(d0);d7.setDate(d7.getDate()-6);var d30=new Date(d0);d30.setDate(d30.getDate()-29);var end=iso(now);
+function tot(a,id){return gcg('stats/total?start='+iso(a)+'&end='+end).then(function(j){$(id).textContent=(j.total!=null?j.total:(j.total_utc||0))})}
+Promise.all([tot(d0,'v1'),tot(d7,'v7'),tot(d30,'v30'),
+gcg('stats/toprefs?limit=50&start='+iso(d30)+'&end='+end),gcg('stats/hits?limit=10&start='+iso(d30)+'&end='+end)]).then(function(r){
+var refs=(r[3].stats||[]),map={},sum=0;refs.forEach(function(x){var k=srcName(x.name);if(k===null)return;map[k]=(map[k]||0)+(x.count||0);sum+=(x.count||0)});
+var tv=parseInt($('v30').textContent)||0,known=sum;if(tv>known&&!map['Directo'])map['Directo']=0;if(tv>known){map['Directo']=(map['Directo']||0)+(tv-known)}
+var rows=Object.keys(map).map(function(k){return[k,map[k]]}).sort(function(a,b){return b[1]-a[1]}),mx=rows.length?rows[0][1]:1,all=rows.reduce(function(a,x){return a+x[1]},0)||1;
+var icon={Google:'🔎',Facebook:'📘',Instagram:'📸',TikTok:'🎵',WhatsApp:'💬',Directo:'➡️'};
+$('vsrc').innerHTML=rows.length?rows.map(function(x){return '<div style="margin:8px 0"><div style="display:flex;justify-content:space-between"><span>'+(icon[x[0]]||'🌐')+' '+esc(x[0])+'</span><b>'+x[1]+' <span class="tip">('+Math.round(x[1]*100/all)+'%)</span></b></div><div style="background:var(--bd);border-radius:6px;height:8px"><div style="background:var(--pr);height:8px;border-radius:6px;width:'+Math.max(3,Math.round(x[1]*100/mx))+'%"></div></div></div>'}).join(''):'<p class="tip">Todavía no hay visitas registradas.</p>';
+var hits=(r[4].hits||[]);$('vpages').innerHTML=hits.length?hits.map(function(h){return '<div style="display:flex;justify-content:space-between;margin:6px 0"><span>'+esc(h.path||'')+'</span><b>'+(h.count||0)+'</b></div>'}).join(''):'<p class="tip">Todavía no hay datos.</p>';
+$('vupd').textContent='· actualizado '+new Date().toLocaleTimeString('es-PE')}).catch(function(e){var m=String(e.message||e);$('vsrc').innerHTML='<div class="msg e">No se pudieron leer las visitas ('+esc(m)+'). Revise el token o abra el panel de GoatCounter.</div>'})}
+$('gin').onclick=function(){GT=$('gtok').value.trim();if(!GT)return;gcg('stats/total').then(function(){try{localStorage.setItem('cefro_gc',GT)}catch(e){}visOpen()}).catch(function(e){GT='';msg('gm','No se pudo conectar ('+esc(String(e.message))+'). Revise que el token sea de lectura y esté bien copiado.','e')})};
+$('gout').onclick=function(){try{localStorage.removeItem('cefro_gc')}catch(e){}GT='';clearInterval(GTMR);visOpen()};
 
 /* ---------- fotos y videos ---------- */
 var IMG=/\.(jpe?g|png|webp|gif)$/i,VID=/\.(mp4|webm|mov)$/i;
