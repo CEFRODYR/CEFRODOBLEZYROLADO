@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
+Disallow: /*.txt$
 
 Sitemap: https://cefrodr.com/sitemap.xml
