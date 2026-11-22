@@ -2,7 +2,7 @@
 var REPO='CEFRODYR/CEFRODOBLEZYROLADO';
 var IMG=/\.(jpe?g|png|webp|gif|avif)$/i, VID=/\.(mp4|webm|mov)$/i;
 function human(n){var b=n.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim();
- if(!b||b.replace(/\D/g,'').length>b.length/2)return '';return b.charAt(0).toUpperCase()+b.slice(1);}
+ if(!b||b.replace(/\D/g,'').length>b.length/2)return '';b=b.replace(/parabolico/gi,'parabólico').replace(/\bmaquina/gi,'máquina');return b.charAt(0).toUpperCase()+b.slice(1);}
 function get(folder){
  var k='cefro:'+folder;
  try{var c=JSON.parse(sessionStorage.getItem(k)||'null');if(c&&Date.now()-c.t<300000)return Promise.resolve(c.l);}catch(e){}
@@ -24,7 +24,7 @@ document.querySelectorAll('.auto').forEach(function(box){
   if(!items.length){if(box.getAttribute('data-reveal')){var se=box.closest('section');if(se)se.style.display='none';return;}box.innerHTML='<div class="ph" style="grid-column:1/-1">'+esc(box.getAttribute('data-empty')||'')+'</div>';return;}
   if(box.getAttribute('data-reveal')){var se2=box.closest('section');if(se2)se2.style.display='';}
   box.innerHTML=items.map(function(it){
-   if(type==='video')return '<video controls preload="metadata" playsinline src="'+it.s+'"></video>';
+   if(type==='video'){var vc=human(it.n.replace(/^\d+-/,''));return '<figure><video controls preload="metadata" playsinline src="'+it.s+'#t=0.5"></video>'+(vc?'<figcaption>'+esc(vc)+'</figcaption>':'')+'</figure>';}
    var c=human(it.n);
    return '<figure><img src="'+it.s+'" alt="'+esc(c||'Trabajo de CEFRO')+'" loading="lazy" onerror="this.parentNode.remove()">'+(c?'<figcaption>'+esc(c)+'</figcaption>':'')+'</figure>';
   }).join('');

@@ -77,6 +77,8 @@ a.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.14)}
 .gal.p img{aspect-ratio:3/4}
 .gal figure{margin:0}
 .gal figcaption{font-size:14px;color:var(--muted);margin-top:6px}
+.vid figure{margin:0}
+.vid figcaption{font-size:14px;color:var(--muted);margin-top:6px;text-align:center}
 .ph{grid-column:1/-1;text-align:center;border:2px dashed var(--line);border-radius:12px;padding:40px 18px;color:var(--muted)}
 .ph a{color:var(--blue);font-weight:600}
 .about{display:grid;gap:36px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:center}
