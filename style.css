@@ -165,3 +165,15 @@ footer.main .fl img{width:52px;height:52px;border-radius:50%;border:2px solid va
 .vid.strip figcaption{font-weight:600;color:var(--text)}
 @media(max-width:900px){.vid.strip{grid-auto-columns:42%}}
 @media(max-width:560px){.vid.strip{grid-auto-columns:72%}}
+
+/* Banners publicitarios */
+.bnr-sec{padding:34px 0}
+.bnr,.bnr-one{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(13,23,38,.18);background:#000}
+.bnr .track{display:flex;transition:transform .6s ease}
+.bnr .track>a,.bnr-one>a{flex:0 0 100%;display:block}
+.bnr img,.bnr-one img{width:100%;height:auto;aspect-ratio:2/1;display:block;object-fit:cover}
+.bnr button{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:0;background:rgba(0,0,0,.45);color:#fff;font-size:28px;line-height:1;cursor:pointer;z-index:2}
+.bnr button:hover{background:var(--accent);color:#111}.bnr .bp{left:12px}.bnr .bn{right:12px}
+.bnr .dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:7px;z-index:2}
+.bnr .dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer}.bnr .dots i.on{background:var(--accent);width:26px;border-radius:6px}
+@media(max-width:560px){.bnr button{width:36px;height:36px;font-size:22px}.bnr-sec{padding:20px 0}}
