@@ -33,4 +33,15 @@ document.querySelectorAll('.auto').forEach(function(box){
   }).join('');
  }).catch(function(){});
 });
+/* Ver fotos en grande */
+document.addEventListener('click',function(e){var im=e.target.closest&&e.target.closest('.gal.auto img');if(!im)return;
+ var all=[].slice.call(im.closest('.gal').querySelectorAll('img')),i=all.indexOf(im),bx=document.createElement('div');bx.className='lb';
+ bx.innerHTML='<img alt=""><p></p><button class="x" aria-label="Cerrar">×</button><button class="pv" aria-label="Anterior">‹</button><button class="nx" aria-label="Siguiente">›</button>';
+ function show(){var s=all[i];bx.querySelector('img').src=s.src;bx.querySelector('img').alt=s.alt;var c=s.parentNode.querySelector('figcaption');bx.querySelector('p').textContent=c?c.textContent:''}
+ function go(d){i=(i+d+all.length)%all.length;show()}
+ function close(){bx.remove();document.removeEventListener('keydown',key)}
+ function key(ev){if(ev.key==='Escape')close();if(ev.key==='ArrowRight')go(1);if(ev.key==='ArrowLeft')go(-1)}
+ bx.addEventListener('click',function(ev){if(ev.target.classList.contains('pv'))go(-1);else if(ev.target.classList.contains('nx'))go(1);else if(ev.target.tagName!=='IMG')close()});
+ document.addEventListener('keydown',key);if(all.length<2){bx.querySelector('.pv').style.display=bx.querySelector('.nx').style.display='none'}
+ show();document.body.appendChild(bx)});
 })();
