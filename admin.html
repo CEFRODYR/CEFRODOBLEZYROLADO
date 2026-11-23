@@ -159,7 +159,7 @@ kbd{background:var(--bg);border:1px solid var(--bd);border-radius:4px;padding:0 
 var REPO='CEFRODYR/cefrodoblezyrolado',BR='main',API='https://api.github.com/repos/'+REPO+'/contents/';
 var NAMES={'index.html':'Inicio','techo-parabolico.html':'Techos parabólicos','techos-parabolicos-coberturas-coliseos.html':'Coberturas y coliseos','rolado-de-tubo.html':'Rolado de tubo','rolado-de-tubo-rectangular.html':'Rolado de tubo rectangular','rolado-de-angulo-platina-canaleta.html':'Ángulo, platina y canaletas','tubos-schedule.html':'Tubos schedule','doblez-de-tubo.html':'Doblez de tubo','barandas-y-pasamanos.html':'Barandas y pasamanos','soldadura.html':'Soldadura','obras.html':'Nuestras obras','doblez-y-rolado-lima-norte.html':'Lima Norte'};
 var PAGES=Object.keys(NAMES).map(function(k){return[k,NAMES[k]]});
-var FOLDERS=[['afiches','Afiches (inicio, primero)'],['techos-parabolicos','Techos parabólicos'],['rolado','Rolado de tubo'],['doblez','Doblez de tubo'],['soldadura','Soldadura'],['obras','Nuestras obras'],['maquinaria','Maquinaria (inicio)'],['videos','Videos (inicio)']];
+var FOLDERS=[['afiches','Afiches (inicio, primero)'],['reels','Videos reels (inicio)'],['techos-parabolicos','Techos parabólicos'],['rolado','Rolado de tubo'],['doblez','Doblez de tubo'],['soldadura','Soldadura'],['obras','Nuestras obras'],['maquinaria','Maquinaria (inicio)'],['videos','Videos (inicio)']];
 var $=function(i){return document.getElementById(i)},TK='',FOLDER='techos-parabolicos';
 try{TK=localStorage.getItem('cefro_tk')||''}catch(e){}
 function gh(path,opt){opt=opt||{};opt.headers={Authorization:'Bearer '+TK,Accept:'application/vnd.github+json'};
