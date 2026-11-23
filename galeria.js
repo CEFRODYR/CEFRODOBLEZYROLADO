@@ -17,7 +17,7 @@ document.querySelectorAll('.auto').forEach(function(box){
  Promise.all(folders.map(get)).then(function(lists){
   var items=[];
   lists.forEach(function(l,i){l.forEach(function(n){
-   if(type==='img'&&IMG.test(n))items.push({n:n,s:'imagenes/'+folders[i]+'/'+encodeURIComponent(n)});
+   if(type==='img'&&IMG.test(n))items.push({n:n,k:folders[i]+'/'+n,s:'imagenes/'+folders[i]+'/'+encodeURIComponent(n)});
    if(type==='video'&&VID.test(n))items.push({n:n,s:'imagenes/'+folders[i]+'/'+encodeURIComponent(n)});
   });});
   items.sort(function(a,b){return a.n.localeCompare(b.n,undefined,{numeric:true})});
@@ -25,7 +25,7 @@ document.querySelectorAll('.auto').forEach(function(box){
   if(box.getAttribute('data-reveal')){var se2=box.closest('section');if(se2)se2.style.display='';}
   box.innerHTML=items.map(function(it){
    if(type==='video'){var vc=human(it.n.replace(/^\d+-/,''));return '<figure><video controls preload="metadata" playsinline src="'+it.s+'#t=0.5"></video>'+(vc?'<figcaption>'+esc(vc)+'</figcaption>':'')+'</figure>';}
-   var c=human(it.n);
+   var D=window.CEFRO_DESC||{};var c=D[it.k]||human(it.n);
    return '<figure><img src="'+it.s+'" alt="'+esc(c||'Trabajo de CEFRO')+'" loading="lazy" onerror="this.parentNode.remove()">'+(c?'<figcaption>'+esc(c)+'</figcaption>':'')+'</figure>';
   }).join('');
  }).catch(function(){});
