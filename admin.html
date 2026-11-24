@@ -29,6 +29,9 @@ label{display:block;font-weight:600;margin:10px 0 4px}
 .vt{position:absolute;bottom:6px;left:6px;background:rgba(0,0,0,.7);color:#fff;border-radius:6px;padding:2px 8px;font-size:12px}
 .it .cap{border:0;border-top:1px solid var(--bd);border-radius:0;background:var(--card);resize:none;font-size:13px;padding:8px;min-height:54px}
 .it .cap:focus{outline:2px solid var(--pr);outline-offset:-2px}
+.it .dt{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px 8px;border-top:1px solid var(--bd);font-size:11px;color:var(--mu)}.it .dt label{display:flex;flex-direction:column;gap:2px}.it .dt input{font-size:12px;padding:4px;border:1px solid var(--bd);border-radius:6px;background:var(--card);color:var(--tx);width:100%}
+.st{position:absolute;left:6px;bottom:6px;font-size:11px;font-weight:700;padding:3px 7px;border-radius:6px;color:#fff;z-index:2}.st.nvo{background:#e11d48}.st.prog{background:#2563eb}.st.venc{background:#475569}
+.phint{background:#eef4ff;border:1px solid #bfd3ff;border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:14px}.phint button{margin-left:8px}
 .it .nm{padding:4px 8px;color:var(--mu);font-size:11px;word-break:break-all;border-top:1px solid var(--bd)}
 .ac{display:flex;border-top:1px solid var(--bd)}.ac button{flex:1;border-radius:0;padding:8px 4px;background:transparent;color:var(--tx);font-weight:600;font-size:14px}.ac button:hover{background:rgba(127,127,127,.15)}.ac button.x{color:var(--err)}
 .ac select{border:0;border-radius:0;flex:1.4;padding:6px;font-size:12px;background:transparent;min-width:0}
@@ -253,13 +256,50 @@ $('gout').onclick=function(){try{localStorage.removeItem('cefro_gc')}catch(e){}G
 
 /* ---------- fotos y videos ---------- */
 var IMG=/\.(jpe?g|png|webp|gif|avif)$/i,VID=/\.(mp4|webm|mov)$/i;
-var DESC={},ORDER={},DSHA='',DTXT='',ITEMS=[],MDIRTY=false,COUNTS={};
-function loadDesc(){return gh('descripciones.js?ref='+BR+'&t='+Date.now()).then(function(j){DSHA=j.sha;DTXT=dec(j.content);var w={};try{new Function('window',DTXT)(w)}catch(e){}DESC=w.CEFRO_DESC||{};ORDER=w.CEFRO_ORDER||{}}).catch(function(e){if(!/^404/.test(e.message))throw e;DSHA='';DESC={};ORDER={}})}
+var DESC={},ORDER={},META={},POST={},DSHA='',DTXT='',ITEMS=[],MDIRTY=false,COUNTS={};
+function loadDesc(){return gh('descripciones.js?ref='+BR+'&t='+Date.now()).then(function(j){DSHA=j.sha;DTXT=dec(j.content);var w={};try{new Function('window',DTXT)(w)}catch(e){}DESC=w.CEFRO_DESC||{};ORDER=w.CEFRO_ORDER||{};META=w.CEFRO_META||{}}).catch(function(e){if(!/^404/.test(e.message))throw e;DSHA='';DESC={};ORDER={};META={}})}
 function objLines(o,fn){var ks=Object.keys(o).sort();return '{\n'+ks.map(function(k){return JSON.stringify(k)+':'+fn(o[k])}).join(',\n')+'\n}'}
-function descText(){return '// Descripciones (pie de foto) y orden de las fotos y videos de las galerías.\n// Clave: carpeta/archivo. Este archivo lo actualiza el panel de administración (admin.html).\nwindow.CEFRO_DESC='+objLines(DESC,JSON.stringify)+';\nwindow.CEFRO_ORDER='+objLines(ORDER,function(a){return JSON.stringify(a)})+';\n'}
+function descText(){return '// Descripciones (pie de foto) y orden de las fotos y videos de las galerías.\n// Clave: carpeta/archivo. Este archivo lo actualiza el panel de administración (admin.html).\nwindow.CEFRO_DESC='+objLines(DESC,JSON.stringify)+';\nwindow.CEFRO_ORDER='+objLines(ORDER,function(a){return JSON.stringify(a)})+';\n// Fechas: u=subido, d=publicar desde, h=ocultar después de (AAAA-MM-DD)\nwindow.CEFRO_META='+objLines(META,JSON.stringify)+';\n'}
 function saveDesc(why){var body={message:why||'Actualiza orden y descripciones de fotos',content:enc(descText()),branch:BR};if(DSHA)body.sha=DSHA;
-return gh('descripciones.js',{method:'PUT',body:JSON.stringify(body)}).then(function(j){DSHA=j.content.sha})}
+return gh('descripciones.js',{method:'PUT',body:JSON.stringify(body)}).then(function(j){DSHA=j.content.sha;setTimeout(function(){regenSitemap().catch(function(e){console.warn('sitemap',e)})},300)})}
 function setM(v){MDIRTY=v;$('msave').classList.toggle('hide',!v)}
+/* ---------- automatizaciones: fechas, portadas, sitemap ---------- */
+function hoy(){try{var x=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Lima'}))}catch(e){x=new Date()}return x.getFullYear()+'-'+('0'+(x.getMonth()+1)).slice(-2)+'-'+('0'+x.getDate()).slice(-2)}
+function fdate(d){var p=d.split('-');return p[2]+'/'+p[1]+'/'+p[0]}
+function stBadge(k){var m=META[k]||{},H=hoy(),f=m.d&&m.d>(m.u||'')?m.d:m.u;
+ if(m.d&&m.d>H)return '<span class="st prog">⏰ Sale el '+fdate(m.d)+'</span>';
+ if(m.h&&m.h<H)return '<span class="st venc">🚫 Oculto desde '+fdate(m.h)+'</span>';
+ if(f&&(Date.parse(H)-Date.parse(f))/864e5<=15)return '<span class="st nvo">✨ NUEVO</span>';return ''}
+function pname(n){return n.replace(/\.[^.]+$/,'')+'.jpg'}
+function poster(src){return new Promise(function(res,rej){var v=document.createElement('video'),done=false;v.muted=true;v.playsInline=true;v.preload='auto';if(!/^blob:/.test(src))v.crossOrigin='anonymous';
+ var to=setTimeout(function(){fin(null,'tardó demasiado')},45000);function fin(b,er){if(done)return;done=true;clearTimeout(to);v.removeAttribute('src');v.load();b?res(b):rej(new Error(er||'sin imagen'))}
+ v.onloadedmetadata=function(){v.currentTime=Math.min(1,(v.duration||3)/3)};
+ v.onseeked=function(){try{var s=Math.min(1,720/Math.max(v.videoWidth,v.videoHeight)),c=document.createElement('canvas');c.width=Math.round(v.videoWidth*s);c.height=Math.round(v.videoHeight*s);c.getContext('2d').drawImage(v,0,0,c.width,c.height);c.toBlob(function(b){fin(b,'el navegador no pudo leer el video')},'image/jpeg',.82)}catch(e){fin(null,e.message)}};
+ v.onerror=function(){fin(null,'formato de video no compatible')};v.src=src})}
+async function putFile(path,blob){var body={message:'Sube '+path,content:await toB64(blob),branch:BR};try{var ex=await gh(path+'?ref='+BR+'&t='+Date.now());if(ex&&ex.sha)body.sha=ex.sha}catch(e){}return gh(path,{method:'PUT',body:JSON.stringify(body)})}
+async function makeMissing(){var b=$('mkpost');b.disabled=true;var l=ITEMS.filter(function(x){return x.v&&!POST[pname(x.name)]}),ok=0,bad='';
+ for(var i=0;i<l.length;i++){b.textContent='Creando '+(i+1)+' de '+l.length+'…';try{await putFile('imagenes/'+FOLDER+'/portadas/'+pname(l[i].name),await poster(l[i].url));ok++}catch(e){bad+='<br>❌ '+esc(l[i].name)+': '+esc(e.message)}}
+ msg('um','✅ '+ok+' portada(s) creadas. Se ven en la página en 1–3 minutos.'+bad,bad?'e':'');loadList()}
+var SMAP=[['https://cefrodr.com/',['afiches','maquinaria','banners'],['reels','videos']],['https://cefrodr.com/techo-parabolico.html',['techos-parabolicos'],[]],['https://cefrodr.com/doblez-de-tubo.html',['doblez'],[]],['https://cefrodr.com/rolado-de-tubo.html',['rolado'],[]],['https://cefrodr.com/soldadura.html',['soldadura'],[]],['https://cefrodr.com/obras.html',['obras'],['obras']]];
+var SMBUSY=false;
+async function regenSitemap(){if(SMBUSY)return;SMBUSY=true;try{
+ var H=hoy();function vis(k){var m=META[k]||{};return !(m.d&&m.d>H)&&!(m.h&&m.h<H)}
+ function x(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+ function u(f,n){return 'https://cefrodr.com/imagenes/'+f+'/'+encodeURIComponent(n)}
+ var cache={};async function ls(f){if(!cache[f])cache[f]=await gh('imagenes/'+f+'?ref='+BR+'&t='+Date.now()).then(function(a){return a.filter(function(e){return e.type=='file'}).map(function(e){return e.name})}).catch(function(){return[]});return cache[f]}
+ function ord(f,l){var O=ORDER[f]||[];return l.slice().sort(function(a,b){var ia=O.indexOf(a),ib=O.indexOf(b);return((ia<0?1e6:ia)-(ib<0?1e6:ib))||a.localeCompare(b,undefined,{numeric:true})})}
+ var j=await gh('sitemap.xml?ref='+BR+'&t='+Date.now()),xml=dec(j.content),old=xml;
+ for(var p=0;p<SMAP.length;p++){var loc=SMAP[p][0],inner='';
+  for(var a=0;a<SMAP[p][1].length;a++){var f=SMAP[p][1][a];ord(f,(await ls(f)).filter(function(n){return IMG.test(n)&&vis(f+'/'+n)})).forEach(function(n){inner+='<image:image><image:loc>'+u(f,n)+'</image:loc></image:image>'})}
+  for(var b=0;b<SMAP[p][2].length;b++){var g=SMAP[p][2][b],pl=await ls(g+'/portadas');ord(g,(await ls(g)).filter(function(n){return VID.test(n)&&vis(g+'/'+n)&&pl.indexOf(pname(n))>=0})).forEach(function(n){var k=g+'/'+n,t=DESC[k]||human(n.replace(/^\d+-/,''))||'Video de trabajo',m=META[k]||{};
+   inner+='<video:video><video:thumbnail_loc>'+u(g+'/portadas',pname(n))+'</video:thumbnail_loc><video:title>'+x(t+' | CEFRO Doblez y Rolado')+'</video:title><video:description>'+x(t+': trabajo real de rolado y doblez de tubos en Independencia, Lima.')+'</video:description><video:content_loc>'+u(g,n)+'</video:content_loc><video:publication_date>'+((m.d&&m.d>(m.u||'')?m.d:m.u)||'2026-11-23')+'T12:00:00-05:00</video:publication_date><video:family_friendly>yes</video:family_friendly></video:video>'})}
+  var re=new RegExp('<url><loc>'+loc.replace(/[.*+?^${}()|[\]\\\/]/g,'\\$&')+'</loc>[\\s\\S]*?</url>');
+  var cur=xml.match(re);if(!cur)continue;
+  var lm=(cur[0].match(/<lastmod>([^<]*)<\/lastmod>/)||[])[1]||H,body='<url><loc>'+loc+'</loc><lastmod>LM</lastmod>'+inner+'</url>';
+  var curN=cur[0].replace(/<lastmod>[^<]*<\/lastmod>/,'<lastmod>LM</lastmod>');
+  xml=xml.replace(re,function(){return body.replace('LM',curN==body?lm:H)})}
+ if(xml!=old)await gh('sitemap.xml',{method:'PUT',body:JSON.stringify({message:'Actualiza sitemap con fotos y videos nuevos',content:enc(xml),sha:j.sha,branch:BR})});
+}finally{SMBUSY=false}}
 function bnrHint(){var h=$('bnrhint');if(!h){h=document.createElement('p');h.id='bnrhint';h.style.cssText='background:#fff6e5;border:1px solid #f0c36d;border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:14px;line-height:1.5';$('pills').parentNode.insertBefore(h,$('pills').nextSibling)}
  if(!/^banners/.test(FOLDER)){h.style.display='none';return}h.style.display='';
  h.innerHTML=FOLDER=='banners'?'🔁 <b>Banners de todo el año.</b> Salen en el carrusel del inicio todos los meses; cada mes la web empieza solita por un banner distinto. Tamaño ideal: <b>1200 × 600</b> px (el doble de ancho que de alto).':'📅 <b>Banners solo para '+FOLDER.replace('banners-','').toUpperCase()+'.</b> Durante ese mes aparecen primero en el carrusel, antes que los de todo el año. Al terminar el mes se ocultan solos (y vuelven el próximo año). Tamaño ideal: <b>1200 × 600</b> px.'}
@@ -269,19 +309,22 @@ function fname(f){return FOLDERS.filter(function(x){return x[0]==f})[0][1]}
 function loadList(){$('ft').textContent='2. Fotos y videos de «'+fname(FOLDER)+'»';$('list').innerHTML='<p>Cargando…</p>';setM(false);
 return gh('imagenes/'+FOLDER+'?ref='+BR+'&t='+Date.now()).catch(function(e){if(/^404/.test(e.message))return[];throw e}).then(function(a){
 ITEMS=a.filter(function(x){return x.type=='file'&&(IMG.test(x.name)||VID.test(x.name))}).map(function(x){return{name:x.name,path:x.path,sha:x.sha,url:x.download_url,v:VID.test(x.name)}});
+var F0=FOLDER;return (ITEMS.some(function(x){return x.v})?gh('imagenes/'+FOLDER+'/portadas?ref='+BR+'&t='+Date.now()).catch(function(){return[]}):Promise.resolve([])).then(function(pl){POST={};pl.forEach(function(p){if(p.type=='file')POST[p.name]=p});if(F0!=FOLDER)return;
 var O=ORDER[FOLDER]||[];function rk(n){var i=O.indexOf(n);return i<0?1e6:i}
 ITEMS.sort(function(a,b){return (rk(a.name)-rk(b.name))||a.name.localeCompare(b.name,undefined,{numeric:true})});
-COUNTS[FOLDER]=ITEMS.length;buildPills();render()}).catch(function(e){$('list').innerHTML='<p>Error: '+esc(e.message)+'</p>'})}
+COUNTS[FOLDER]=ITEMS.length;buildPills();render()})}).catch(function(e){$('list').innerHTML='<p>Error: '+esc(e.message)+'</p>'})}
 function human(n){var b=n.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim();if(!b||b.replace(/\D/g,'').length>b.length/2)return '';return b.charAt(0).toUpperCase()+b.slice(1)}
 function render(){if(!ITEMS.length){$('list').innerHTML='<p class="tip" style="grid-column:1/-1;padding:20px;text-align:center">Esta sección aún no tiene fotos ni videos. Arrástrelos aquí o arriba.</p>';return}
 var opts=FOLDERS.filter(function(f){return f[0]!=FOLDER}).map(function(f){return '<option value="'+f[0]+'">'+f[1]+'</option>'}).join('');
+var miss=ITEMS.filter(function(x){return x.v&&!POST[pname(x.name)]}).length;setTimeout(function(){var h=$('posthint');if(!h){h=document.createElement('div');h.id='posthint';$('list').parentNode.insertBefore(h,$('list'))}h.innerHTML=miss?'<p class="phint">🎞 '+miss+' video(s) sin portada (se ven negros en la página). <button id="mkpost">Crear portadas automáticamente</button></p>':'';if(miss)$('mkpost').onclick=makeMissing});
 $('list').innerHTML=ITEMS.map(function(x,i){var k=FOLDER+'/'+x.name;
-return '<div class="it" data-n="'+esc(x.name)+'"><div class="th">'+(x.v?'<video src="'+x.url+'#t=0.5" preload="metadata" muted playsinline></video><span class="vt">▶ Video</span>':'<img loading="lazy" src="'+x.url+'" alt="">')+'<span class="num">'+(i+1)+'</span><span class="hd" title="Arrastrar para mover">✋</span></div>'+
+return '<div class="it" data-n="'+esc(x.name)+'"><div class="th">'+(x.v?'<video src="'+x.url+'#t=0.5" preload="metadata" muted playsinline'+(POST[pname(x.name)]?' poster="'+POST[pname(x.name)].download_url+'"':'')+'></video><span class="vt">▶ Video'+(POST[pname(x.name)]?'':' · sin portada')+'</span>':'<img loading="lazy" src="'+x.url+'" alt="">')+stBadge(k)+'<span class="num">'+(i+1)+'</span><span class="hd" title="Arrastrar para mover">✋</span></div>'+
 '<textarea class="cap" rows="2" placeholder="'+(x.v?'Título del video':'Pie de foto: ¿qué se ve?')+'">'+esc(DESC[k]!=null?DESC[k]:'')+'</textarea>'+
 '<div class="nm">'+esc(x.name)+(DESC[k]==null&&human(x.name)?' · en la página: «'+esc(human(x.name))+'»':'')+'</div>'+
-'<div class="ac"><button data-a="l" title="Mover antes">◀</button><button data-a="r" title="Mover después">▶</button><select data-a="mv" title="Mover a otra sección"><option value="">Mover a…</option>'+opts+'</select><button data-a="del" class="x" title="Borrar">🗑</button></div></div>'}).join('')}
+'<div class="dt"><label>📅 Publicar desde<input type="date" data-m="d" value="'+((META[k]||{}).d||'')+'"></label><label>⏹ Ocultar después de<input type="date" data-m="h" value="'+((META[k]||{}).h||'')+'"></label></div>'+'<div class="ac"><button data-a="l" title="Mover antes">◀</button><button data-a="r" title="Mover después">▶</button><select data-a="mv" title="Mover a otra sección"><option value="">Mover a…</option>'+opts+'</select><button data-a="del" class="x" title="Borrar">🗑</button></div></div>'}).join('')}
 function syncOrder(){var ns=[].map.call($('list').querySelectorAll('.it'),function(e){return e.dataset.n});ITEMS.sort(function(a,b){return ns.indexOf(a.name)-ns.indexOf(b.name)});
 ORDER[FOLDER]=ns;[].forEach.call($('list').querySelectorAll('.num'),function(e,i){e.textContent=i+1});setM(true)}
+$('list').addEventListener('change',function(e){var m=e.target.dataset&&e.target.dataset.m;if(!m)return;var n=e.target.closest('.it').dataset.n,k=FOLDER+'/'+n,o=META[k]||{};if(e.target.value)o[m]=e.target.value;else delete o[m];if(o.d&&o.h&&o.h<o.d){alert('La fecha para ocultar debe ser después de la fecha de publicación.');e.target.value='';delete o[m]}if(Object.keys(o).length)META[k]=o;else delete META[k];var t=e.target.closest('.it').querySelector('.st');if(t)t.outerHTML=stBadge(k);else e.target.closest('.it').querySelector('.th').insertAdjacentHTML('beforeend',stBadge(k));setM(true)});
 $('list').addEventListener('input',function(e){if(!e.target.classList.contains('cap'))return;var n=e.target.closest('.it').dataset.n,k=FOLDER+'/'+n,v=e.target.value.replace(/\s+/g,' ').trim();if(v)DESC[k]=v;else delete DESC[k];setM(true)});
 $('list').addEventListener('click',function(e){var b=e.target.closest('button[data-a]');if(!b)return;var it=b.closest('.it');
 if(b.dataset.a=='l'&&it.previousElementSibling){it.parentNode.insertBefore(it,it.previousElementSibling);syncOrder()}
@@ -305,9 +348,9 @@ function end(){if(!drag)return;drag.classList.remove('dragging');if(started)sync
 $('list').addEventListener('pointerup',end);$('list').addEventListener('pointercancel',end)})();
 $('mgo').onclick=function(){$('mgo').disabled=true;msg('um','⏳ Guardando…','w');saveDesc('Ordena y describe fotos de '+FOLDER).then(function(){setM(false);msg('um','✅ Guardado. Se verá en la página en 1 a 3 minutos.')}).catch(function(e){msg('um','No se pudo guardar: '+esc(e.message)+'. Recargue la página e intente de nuevo.','e')}).then(function(){$('mgo').disabled=false;$('um').scrollIntoView({behavior:'smooth',block:'center'})})};
 $('mundo').onclick=function(){if(!confirm('¿Descartar los cambios sin guardar?'))return;loadDesc().then(loadList)};
-function dropKeys(n){delete DESC[FOLDER+'/'+n];if(ORDER[FOLDER])ORDER[FOLDER]=ORDER[FOLDER].filter(function(x){return x!=n})}
+function dropKeys(n){delete DESC[FOLDER+'/'+n];delete META[FOLDER+'/'+n];if(ORDER[FOLDER])ORDER[FOLDER]=ORDER[FOLDER].filter(function(x){return x!=n})}
 function delItem(n,b){if(!confirm('¿Borrar «'+n+'»? Esto no se puede deshacer.'))return;var x=ITEMS.filter(function(i){return i.name==n})[0];b.disabled=true;
-gh(x.path,{method:'DELETE',body:JSON.stringify({message:'Borra '+x.path,sha:x.sha,branch:BR})}).then(function(){syncOrderSilent();dropKeys(n);return saveDesc('Borra '+x.path)}).then(function(){msg('um','🗑 Archivo borrado. Desaparece de la página en 1–3 minutos.');loadList()}).catch(function(e){b.disabled=false;msg('um','No se pudo borrar: '+esc(e.message),'e')})}
+gh(x.path,{method:'DELETE',body:JSON.stringify({message:'Borra '+x.path,sha:x.sha,branch:BR})}).then(function(){var op=x.v&&POST[pname(n)];if(op)return gh(op.path,{method:'DELETE',body:JSON.stringify({message:'Borra portada '+op.path,sha:op.sha,branch:BR})}).catch(function(){})}).then(function(){syncOrderSilent();dropKeys(n);return saveDesc('Borra '+x.path)}).then(function(){msg('um','🗑 Archivo borrado. Desaparece de la página en 1–3 minutos.');loadList()}).catch(function(e){b.disabled=false;msg('um','No se pudo borrar: '+esc(e.message),'e')})}
 function syncOrderSilent(){ORDER[FOLDER]=[].map.call($('list').querySelectorAll('.it'),function(e){return e.dataset.n})}
 function b64url(u){return fetch(u+(u.indexOf('?')<0?'?':'&')+'t='+Date.now()).then(function(r){if(!r.ok)throw new Error('descarga '+r.status);return r.blob()}).then(toB64)}
 async function freeName(folder,name){var base=name.replace(/\.[^.]+$/,''),ext=(name.match(/\.[^.]+$/)||[''])[0],n=name,i=2;
@@ -317,7 +360,7 @@ async function moveItem(n,to){var x=ITEMS.filter(function(i){return i.name==n})[
 try{var c=await b64url(x.url),nn=await freeName(to,n),np='imagenes/'+to+'/'+nn;
 await gh(np,{method:'PUT',body:JSON.stringify({message:'Mueve '+x.path+' a '+np,content:c,branch:BR})});
 await gh(x.path,{method:'DELETE',body:JSON.stringify({message:'Mueve '+x.path+' a '+np,sha:x.sha,branch:BR})});
-syncOrderSilent();var d=DESC[FOLDER+'/'+n];dropKeys(n);if(d)DESC[to+'/'+nn]=d;ORDER[to]=[nn].concat((ORDER[to]||[]).filter(function(y){return y!=nn}));
+syncOrderSilent();var d=DESC[FOLDER+'/'+n],mt=META[FOLDER+'/'+n];dropKeys(n);if(d)DESC[to+'/'+nn]=d;if(mt)META[to+'/'+nn]=mt;if(x.v){try{await putFile('imagenes/'+to+'/portadas/'+pname(nn),await poster(x.url))}catch(e){}var op=POST[pname(n)];if(op)gh(op.path,{method:'DELETE',body:JSON.stringify({message:'Borra portada '+op.path,sha:op.sha,branch:BR})}).catch(function(){})}ORDER[to]=[nn].concat((ORDER[to]||[]).filter(function(y){return y!=nn}));
 await saveDesc('Mueve '+n+' a '+to);msg('um','✅ Movido a «'+fname(to)+'». Aparece primero en esa sección.');COUNTS[to]=null;loadList()}catch(e){msg('um','No se pudo mover: '+esc(e.message),'e');render()}}
 $('drop').onclick=function(){$('file').click()};
 ['drop','list'].forEach(function(id){var z=$(id);z.addEventListener('dragover',function(e){if(e.dataTransfer&&[].indexOf.call(e.dataTransfer.types,'Files')>=0){e.preventDefault();z.classList.add('over')}});z.addEventListener('dragleave',function(){z.classList.remove('over')});
@@ -329,13 +372,15 @@ var im=new Image();im.onload=function(){var s=Math.min(1,max/Math.max(im.width,i
 c.toBlob(function(b){res({blob:b,name:file.name.replace(/\.[^.]+$/,'.jpg')})},'image/jpeg',.82)};im.onerror=function(){res({blob:file,name:file.name})};im.src=URL.createObjectURL(file)})}
 function toB64(blob){return new Promise(function(r){var fr=new FileReader();fr.onload=function(){r(fr.result.split(',')[1])};fr.readAsDataURL(blob)})}
 async function up(files){files=[].slice.call(files).filter(function(f){return /^(image|video)\//.test(f.type)||IMG.test(f.name)||VID.test(f.name)});if(!files.length){msg('um','Solo se pueden subir fotos o videos.','e');return}
+var big=files.filter(function(x){return (/^video\//.test(x.type)||VID.test(x.name))&&x.size>40e6});if(big.length&&!confirm('⚠️ Video pesado:\n'+big.map(function(x){return '• '+x.name+' ('+Math.round(x.size/1e6)+' MB)'}).join('\n')+'\n\nLos videos de más de 40 MB tardan mucho en subir y en verse en el celular de sus clientes. Lo ideal es menos de 25 MB (puede achicarlo gratis con CapCut: exportar en 720p).\n\n¿Subirlo de todos modos?'))return;
 if(MDIRTY)syncOrderSilent();var f=FOLDER,ok=[],out='';$('bar').classList.remove('hide');
 var have=ITEMS.map(function(i){return i.name});
 for(var i=0;i<files.length;i++){var fl=files[i];msg('um','⏳ Subiendo '+(i+1)+' de '+files.length+': '+esc(fl.name)+'…','w');$('bar').firstChild.style.width=(i/files.length*100)+'%';
 try{if(fl.size>90e6)throw new Error('pesa más de 90 MB, comprímalo primero');
 var r=await shrink(fl),name=slug(r.name),b=name.replace(/\.[^.]+$/,''),ext=(name.match(/\.[^.]+$/)||[''])[0],j=2;while(have.indexOf(name)>=0||ok.indexOf(name)>=0){name=b+'-'+j+ext;j++}
 var path='imagenes/'+f+'/'+name;
-await gh(path,{method:'PUT',body:JSON.stringify({message:'Sube '+path,content:await toB64(r.blob),branch:BR})});ok.push(name)}catch(e){out+='<br>❌ '+esc(fl.name)+': '+esc(e.message)}}
+await gh(path,{method:'PUT',body:JSON.stringify({message:'Sube '+path,content:await toB64(r.blob),branch:BR})});ok.push(name);META[f+'/'+name]={u:hoy()};
+if(VID.test(name)){msg('um','⏳ Creando portada del video '+esc(name)+'…','w');try{await putFile('imagenes/'+f+'/portadas/'+pname(name),await poster(URL.createObjectURL(fl)))}catch(e){out+='<br>⚠️ '+esc(name)+': no se pudo crear la portada ('+esc(e.message)+'). Use el botón «Crear portadas» luego.'}}}catch(e){out+='<br>❌ '+esc(fl.name)+': '+esc(e.message)}}
 $('bar').firstChild.style.width='100%';setTimeout(function(){$('bar').classList.add('hide')},1200);
 if(ok.length){ORDER[f]=ok.concat((ORDER[f]&&ORDER[f].length?ORDER[f]:have).filter(function(n){return ok.indexOf(n)<0}));try{await saveDesc('Sube fotos a '+f)}catch(e){out+='<br>⚠️ No se pudo guardar el orden: '+esc(e.message)}}
 msg('um','✅ '+ok.length+' de '+files.length+' archivo(s) subido(s). Aparecen primero en la lista; escriba su pie de foto y guarde. Se ven en la página en 1–3 minutos.'+out,out?'e':'');if(f==FOLDER)loadList()}

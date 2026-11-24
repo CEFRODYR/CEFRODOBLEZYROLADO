@@ -272,3 +272,9 @@ body{padding-bottom:64px}.wag{display:none!important}}
 .cinfo a.so,.cinfo a.so:hover{color:#fff;text-decoration:none}
 .soc{justify-content:flex-start}
 @media(max-width:480px){.hrs{font-size:14px}.hrs th{white-space:nowrap}.hrs td{font-size:13.5px}.cmail a{font-size:14px}.hrs tr.hoy th::after{content:""}}
+
+/* etiqueta NUEVO */
+.gal figure,.vid figure{position:relative}
+.nuevo{position:absolute;top:10px;left:10px;z-index:2;background:#e11d48;color:#fff;font:700 12px/1 Inter,sans-serif;letter-spacing:.6px;text-transform:uppercase;padding:6px 9px;border-radius:6px;box-shadow:0 3px 10px rgba(225,29,72,.4);pointer-events:none;animation:nvo 2.4s ease-in-out infinite}
+@keyframes nvo{50%{transform:scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.nuevo{animation:none}}

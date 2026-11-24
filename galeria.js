@@ -11,6 +11,13 @@ function get(folder){
   .then(function(l){var out=(Array.isArray(l)?l:[]).filter(function(f){return f.type==='file'}).map(function(f){return f.name});
    try{sessionStorage.setItem(k,JSON.stringify({t:Date.now(),l:out}));}catch(e){}return out;});
 }
+/* Fechas (hora de Lima) para programar publicaciones y la etiqueta NUEVO.
+   window.CEFRO_META (en descripciones.js, lo llena el panel): {"carpeta/archivo":{u:"subido",d:"publicar desde",h:"ocultar después de"}} */
+function hoyLima(){try{var x=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Lima'}));}catch(e){x=new Date()}return x.getFullYear()+'-'+('0'+(x.getMonth()+1)).slice(-2)+'-'+('0'+x.getDate()).slice(-2)}
+var HOY=hoyLima(),NUEVO_DIAS=15;
+function meta(k){return (window.CEFRO_META||{})[k]||{}}
+function visible(k){var m=meta(k);return !(m.d&&m.d>HOY)&&!(m.h&&m.h<HOY)}
+function esNuevo(k){var m=meta(k),f=m.d&&m.d>(m.u||'')?m.d:m.u;if(!f||f>HOY)return false;return (Date.parse(HOY)-Date.parse(f))/864e5<=NUEVO_DIAS}
 function esc(t){return t.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]});}
 /* Orden elegido en el panel de administración (window.CEFRO_ORDER, en descripciones.js) */
 function rank(k){var O=window.CEFRO_ORDER||{},f=k.split('/')[0],l=O[f];if(!l)return 1e6;var i=l.indexOf(k.slice(f.length+1));return i<0?1e6:i;}
@@ -23,18 +30,20 @@ document.querySelectorAll('.auto').forEach(function(box){
    if(type==='img'&&IMG.test(n))items.push({n:n,k:folders[i]+'/'+n,s:'imagenes/'+folders[i]+'/'+encodeURIComponent(n)});
    if(type==='video'&&VID.test(n))items.push({n:n,k:folders[i]+'/'+n,s:'imagenes/'+folders[i]+'/'+encodeURIComponent(n)});
   });});
+  items=items.filter(function(it){return visible(it.k)});
   items.sort(function(a,b){var d=rank(a.k)-rank(b.k);return d||a.n.localeCompare(b.n,undefined,{numeric:true})});
   if(!items.length){if(box.getAttribute('data-reveal')){var se=box.closest('section');if(se)se.style.display='none';return;}box.innerHTML='<div class="ph" style="grid-column:1/-1">'+esc(box.getAttribute('data-empty')||'')+'</div>';return;}
   if(box.getAttribute('data-reveal')){var se2=box.closest('section');if(se2)se2.style.display='';}
   var D=window.CEFRO_DESC||{};
   box.innerHTML=items.map(function(it){
    if(type==='video'){var vc=D[it.k]||human(it.n.replace(/^\d+-/,''));var pb=it.n.replace(/\.[^.]+$/,'.jpg'),hp=P[it.k.split('/')[0]]&&P[it.k.split('/')[0]].indexOf(pb)>=0;
-    return '<figure><video controls playsinline '+(hp?'preload="none" poster="imagenes/'+it.k.split('/')[0]+'/portadas/'+encodeURIComponent(pb)+'" src="'+it.s+'"':'preload="metadata" src="'+it.s+'#t=0.5"')+'></video>'+(vc?'<figcaption>'+esc(vc)+'</figcaption>':'')+'</figure>';}
+    return '<figure><video controls playsinline '+(hp?'preload="none" poster="imagenes/'+it.k.split('/')[0]+'/portadas/'+encodeURIComponent(pb)+'" src="'+it.s+'"':'preload="metadata" src="'+it.s+'#t=0.5"')+'></video>'+(esNuevo(it.k)?'<span class="nuevo">Nuevo</span>':'')+(vc?'<figcaption>'+esc(vc)+'</figcaption>':'')+'</figure>';}
    var c=D[it.k]||human(it.n);
-   return '<figure><img src="'+it.s+'" alt="'+esc(c||'Trabajo de CEFRO')+'" loading="lazy" onerror="this.parentNode.remove()">'+(c?'<figcaption>'+esc(c)+'</figcaption>':'')+'</figure>';
+   return '<figure><img src="'+it.s+'" alt="'+esc(c||'Trabajo de CEFRO')+'" loading="lazy" onerror="this.parentNode.remove()">'+(esNuevo(it.k)?'<span class="nuevo">Nuevo</span>':'')+(c?'<figcaption>'+esc(c)+'</figcaption>':'')+'</figure>';
   }).join('');
  }).catch(function(){});
 });
+document.querySelectorAll('.yr').forEach(function(e){e.textContent=HOY.slice(0,4)});
 document.addEventListener('play',function(e){[].forEach.call(document.querySelectorAll('.auto video'),function(v){if(v!==e.target)v.pause()})},true);
 /* Ver fotos en grande */
 document.addEventListener('click',function(e){var im=e.target.closest&&e.target.closest('.gal.auto img');if(!im)return;
@@ -70,7 +79,7 @@ document.querySelectorAll('.bnr').forEach(function(b){
  /* 2) luego: lee las carpetas de banners por si se subieron nuevos desde el panel */
  Promise.all([get('banners'),get('banners-'+MESES[m])]).then(function(r){
   var D=window.CEFRO_DESC||{};
-  function list(f,l){return l.filter(function(n){return IMG.test(n)}).map(function(n){return{f:f,n:n,k:f+'/'+n}}).sort(function(a,c){return rank(a.k)-rank(c.k)||a.n.localeCompare(c.n,undefined,{numeric:true})})}
+  function list(f,l){return l.filter(function(n){return IMG.test(n)&&visible(f+'/'+n)}).map(function(n){return{f:f,n:n,k:f+'/'+n}}).sort(function(a,c){return rank(a.k)-rank(c.k)||a.n.localeCompare(c.n,undefined,{numeric:true})})}
   var mes=list('banners-'+MESES[m],r[1]),todos=rot(list('banners',r[0]),m),all=mes.concat(todos);
   if(!all.length)return;
   var sig=all.map(function(x){return x.f+'/'+x.n}).join('|'),cur=[].map.call(tr.querySelectorAll('img'),function(i){return decodeURIComponent(i.getAttribute('src').replace(/^imagenes\//,''))}).join('|');
