@@ -47,13 +47,38 @@ document.addEventListener('click',function(e){var im=e.target.closest&&e.target.
  bx.addEventListener('click',function(ev){if(ev.target.classList.contains('pv'))go(-1);else if(ev.target.classList.contains('nx'))go(1);else if(ev.target.tagName!=='IMG')close()});
  document.addEventListener('keydown',key);if(all.length<2){bx.querySelector('.pv').style.display=bx.querySelector('.nx').style.display='none'}
  show();document.body.appendChild(bx)});
-/* Carrusel de banners */
-document.querySelectorAll('.bnr').forEach(function(b){var tr=b.querySelector('.track'),n=tr.children.length,i=0,t=null,d=b.querySelector('.dots');if(n<2){b.querySelectorAll('button').forEach(function(x){x.style.display='none'});return}
- d.innerHTML=new Array(n+1).join('<i></i>');
+/* Carrusel de banners: cambia solo cada mes (hora de Lima).
+   imagenes/banners           -> banners de todo el año (cada mes empieza por uno distinto)
+   imagenes/banners-enero ... -> banners solo de ese mes (salen primero) */
+var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function limaMes(){try{return new Date(new Date().toLocaleString('en-US',{timeZone:'America/Lima'})).getMonth()}catch(e){return new Date().getMonth()}}
+function rot(a,k){if(!a.length)return a;k=k%a.length;return a.slice(k).concat(a.slice(0,k))}
+function initBnr(b){if(b._stop)b._stop();var tr=b.querySelector('.track'),n=tr.children.length,i=0,t=null,d=b.querySelector('.dots');
+ b.querySelectorAll('button').forEach(function(x){x.style.display=n<2?'none':''});d.innerHTML=n<2?'':new Array(n+1).join('<i></i>');tr.style.transform='';if(n<2)return;
  function go(k){i=(k+n)%n;tr.style.transform='translateX(-'+(i*100)+'%)';[].forEach.call(d.children,function(x,j){x.classList.toggle('on',j===i)})}
  function auto(){clearInterval(t);t=setInterval(function(){if(!document.hidden)go(i+1)},5500)}
  b.querySelector('.bp').onclick=function(){go(i-1);auto()};b.querySelector('.bn').onclick=function(){go(i+1);auto()};
  [].forEach.call(d.children,function(x,j){x.onclick=function(){go(j);auto()}});
- var sx=null;b.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});b.addEventListener('touchend',function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40){go(i+(dx<0?1:-1));auto()}sx=null});
- b.addEventListener('mouseenter',function(){clearInterval(t)});b.addEventListener('mouseleave',auto);go(0);auto()});
+ if(!b._sw){b._sw=1;var sx=null;b.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});b.addEventListener('touchend',function(e){if(sx===null||!b._go)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)b._go(dx<0?1:-1);sx=null});
+  b.addEventListener('mouseenter',function(){b._pause&&b._pause()});b.addEventListener('mouseleave',function(){b._auto&&b._auto()})}
+ b._go=function(s){go(i+s);auto()};b._pause=function(){clearInterval(t)};b._auto=auto;b._stop=function(){clearInterval(t)};go(0);auto()}
+document.querySelectorAll('.bnr').forEach(function(b){
+ var tr=b.querySelector('.track'),m=limaMes(),LINK={},ALT={};
+ [].forEach.call(tr.children,function(a){var im=a.querySelector('img');if(!im)return;var n=decodeURIComponent(im.getAttribute('src').split('/').pop());LINK[n]=a.outerHTML.match(/^<a[^>]*>/)[0];ALT[n]=im.alt});
+ /* 1) al instante: el banner que abre el carrusel cambia según el mes */
+ var st=[].slice.call(tr.children);rot(st,m).forEach(function(a){tr.appendChild(a)});initBnr(b);
+ /* 2) luego: lee las carpetas de banners por si se subieron nuevos desde el panel */
+ Promise.all([get('banners'),get('banners-'+MESES[m])]).then(function(r){
+  var D=window.CEFRO_DESC||{};
+  function list(f,l){return l.filter(function(n){return IMG.test(n)}).map(function(n){return{f:f,n:n,k:f+'/'+n}}).sort(function(a,c){return rank(a.k)-rank(c.k)||a.n.localeCompare(c.n,undefined,{numeric:true})})}
+  var mes=list('banners-'+MESES[m],r[1]),todos=rot(list('banners',r[0]),m),all=mes.concat(todos);
+  if(!all.length)return;
+  var sig=all.map(function(x){return x.f+'/'+x.n}).join('|'),cur=[].map.call(tr.querySelectorAll('img'),function(i){return decodeURIComponent(i.getAttribute('src').replace(/^imagenes\//,''))}).join('|');
+  if(sig===cur)return;
+  tr.innerHTML=all.map(function(x,j){var alt=esc(D[x.k]||ALT[x.n]||human(x.n.replace(/^banner-/,''))||'Promoción CEFRO Doblez y Rolado');
+   var open=x.f==='banners'&&LINK[x.n]?LINK[x.n]:'<a href="https://wa.me/51992550533?text='+encodeURIComponent('Hola, vi su promoción en la web y quiero cotizar')+'" target="_blank" rel="noopener">';
+   return open+'<img'+(j?' decoding="async"':'')+' src="imagenes/'+x.f+'/'+encodeURIComponent(x.n)+'" alt="'+alt+'" width="1200" height="600"></a>'}).join('');
+  initBnr(b);
+ }).catch(function(){});
+});
 })();
