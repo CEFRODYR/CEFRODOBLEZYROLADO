@@ -1,16 +1,16 @@
-@font-face{font-family:Anton;src:url(fuentes/anton.woff) format("woff");font-weight:400;font-display:swap}
-@font-face{font-family:Inter;src:url(fuentes/inter-regular.woff) format("woff");font-weight:400;font-display:swap}
-@font-face{font-family:Inter;src:url(fuentes/inter-semibold.woff) format("woff");font-weight:600;font-display:swap}
-@font-face{font-family:Inter;src:url(fuentes/inter-bold.woff) format("woff");font-weight:700;font-display:swap}
+@font-face{font-family:"Barlow Condensed";src:url(fuentes/barlowcondensed-semibold.woff) format("woff");font-weight:600;font-style:normal;font-display:swap}@font-face{font-family:"Barlow Condensed";src:url(fuentes/barlowcondensed-bold.woff) format("woff");font-weight:700;font-style:normal;font-display:swap}@font-face{font-family:"Barlow Condensed";src:url(fuentes/barlowcondensed-extrabold.woff) format("woff");font-weight:800;font-style:normal;font-display:swap}@font-face{font-family:"Barlow Condensed";src:url(fuentes/barlowcondensed-extrabolditalic.woff) format("woff");font-weight:800;font-style:italic;font-display:swap}@font-face{font-family:"Barlow";src:url(fuentes/barlow-regular.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}@font-face{font-family:"Barlow";src:url(fuentes/barlow-medium.woff) format("woff");font-weight:500;font-style:normal;font-display:swap}@font-face{font-family:"Barlow";src:url(fuentes/barlow-semibold.woff) format("woff");font-weight:600;font-style:normal;font-display:swap}@font-face{font-family:"Barlow";src:url(fuentes/barlow-bold.woff) format("woff");font-weight:700;font-style:normal;font-display:swap}
+
+
+
 
 :root{--bg:#fff;--alt:#f3f5f8;--text:#17212f;--muted:#586577;--line:#dde3ea;--navy:#0d1726;--navy2:#162338;--accent:#e8890c;--blue:#1e5fa8;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b121d;--alt:#101a28;--text:#eef2f7;--muted:#9fb0c3;--line:#223046;--blue:#5ea2ec;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0b121d;--alt:#101a28;--text:#eef2f7;--muted:#9fb0c3;--line:#223046;--blue:#5ea2ec;color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.65 Barlow,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
 img{max-width:100%}
-h1,h2,h3{font-family:Anton,Oswald,Impact,"Arial Narrow",sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.03em;line-height:1.1;margin:0}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.03em;line-height:1.1;margin:0}
 h1,h2{font-style:italic}
 a{color:inherit}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
@@ -20,9 +20,9 @@ a{color:inherit}
 .topbar span{margin-right:16px}
 header.main{background:var(--bg);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
 header.main .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:Anton,Oswald,sans-serif;text-transform:uppercase;font-weight:400;font-size:19px;letter-spacing:.03em;line-height:1.1}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;font-family:"Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;font-weight:400;font-size:19px;letter-spacing:.03em;line-height:1.1}
 .brand img{width:52px;height:52px;border-radius:50%;border:2px solid var(--accent)}
-.brand small{display:block;font:500 11px Inter,sans-serif;letter-spacing:.08em;color:var(--muted)}
+.brand small{display:block;font:500 11px Barlow,sans-serif;letter-spacing:.08em;color:var(--muted)}
 #nt{display:none}
 .burger{display:none;cursor:pointer;font-size:28px;padding:6px 10px;border:1px solid var(--line);border-radius:8px}
 nav.menu ul{list-style:none;margin:0;padding:0;display:flex;gap:6px;align-items:center}
@@ -41,7 +41,7 @@ nav.menu .cta:hover{color:#1a1204;filter:brightness(1.08)}
  nav.menu .sub{display:flex;position:static;box-shadow:none;border:0;border-left:3px solid var(--accent);border-radius:0;margin-left:14px}
  nav.menu .cta{margin:6px 0 0;text-align:center}
 }
-.eyebrow{display:block;font:700 13px Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.eyebrow{display:block;font:700 13px Barlow,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
 .grid.svc{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}@media(min-width:900px){.grid.svc{grid-template-columns:repeat(4,1fr)}.grid.svc .card .pic img{aspect-ratio:4/3}}
 .hero{position:relative;color:#fff;background:var(--navy);overflow:hidden;min-height:480px}
 .slide{position:absolute;inset:0;display:flex;align-items:center;opacity:0;visibility:hidden;transition:opacity .8s,visibility .8s;background:linear-gradient(100deg,rgba(13,23,38,.96) 35%,rgba(13,23,38,.6)),repeating-linear-gradient(45deg,#22344f 0 16px,#162338 16px 32px)}
@@ -68,8 +68,8 @@ section.alt{background:var(--alt)}
 .faq{padding:40px 0}.faq h2{margin-bottom:14px}.faq details{border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-bottom:10px;background:#fff}.faq summary{cursor:pointer;font-weight:700}.faq p{margin:8px 0 0;color:var(--muted)}
 .card{display:block;text-decoration:none;background:var(--bg);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:transform .15s,box-shadow .15s}
 a.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.14)}
-.card .pic{aspect-ratio:16/10;background:linear-gradient(rgba(13,23,38,.55),rgba(13,23,38,.55)),repeating-linear-gradient(45deg,#2a3f5d 0 14px,#1a2a42 14px 28px);display:flex;align-items:center;justify-content:center;color:#fff;font:400 22px Anton,Oswald,sans-serif;text-transform:uppercase;letter-spacing:.05em;padding:10px;text-align:center}
-.card .pic.ph-img{position:relative;padding:0;overflow:hidden;background:#142033}.card .pic.ph-img img{width:100%!important;height:100%!important;max-width:none;object-fit:cover;display:block;position:absolute;inset:0;transition:transform .4s}.card:hover .pic.ph-img img{transform:scale(1.05)}.card .pic.ph-img .tag{position:absolute;left:12px;bottom:12px;background:rgba(13,23,38,.82);color:#fff;font:600 13px Inter,sans-serif;letter-spacing:.04em;padding:5px 11px;border-radius:999px;text-transform:uppercase}
+.card .pic{aspect-ratio:16/10;background:linear-gradient(rgba(13,23,38,.55),rgba(13,23,38,.55)),repeating-linear-gradient(45deg,#2a3f5d 0 14px,#1a2a42 14px 28px);display:flex;align-items:center;justify-content:center;color:#fff;font:400 22px "Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.05em;padding:10px;text-align:center}
+.card .pic.ph-img{position:relative;padding:0;overflow:hidden;background:#142033}.card .pic.ph-img img{width:100%!important;height:100%!important;max-width:none;object-fit:cover;display:block;position:absolute;inset:0;transition:transform .4s}.card:hover .pic.ph-img img{transform:scale(1.05)}.card .pic.ph-img .tag{position:absolute;left:12px;bottom:12px;background:rgba(13,23,38,.82);color:#fff;font:600 13px Barlow,sans-serif;letter-spacing:.04em;padding:5px 11px;border-radius:999px;text-transform:uppercase}
 .card .pic{overflow:hidden}.card .pic img{margin:-10px;width:calc(100% + 20px);max-width:none;height:calc(100% + 20px);object-fit:cover}
 .card .body{padding:20px}
 .card h3{font-size:21px;margin-bottom:8px}
@@ -91,7 +91,7 @@ a.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.14)}
 .about p{color:var(--muted);font-size:17px}
 .facts{display:grid;gap:14px}
 .fact{background:var(--navy);color:#fff;border-left:5px solid var(--accent);border-radius:8px;padding:18px 20px}
-.fact b{display:block;font:400 21px Anton,Oswald,sans-serif;text-transform:uppercase}
+.fact b{display:block;font:400 21px "Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase}
 .fact span{color:#c7d3e2;font-size:15px}
 .gal{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
 .gal img,.gal video{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border:0;border-radius:0;background:#000}
@@ -104,13 +104,13 @@ a.card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.14)}
 .cbs{display:flex;gap:6px;flex-wrap:wrap}.cb{display:inline-block;padding:5px 13px;border-radius:999px;border:1.5px solid var(--blue);color:var(--blue);font-weight:600;text-decoration:none;font-size:14px;line-height:1.3}.cb:hover{background:var(--blue);color:#fff}
 .cb.wa3{background:#25d366;border-color:#25d366;color:#06240f}.cb.wa3:hover{background:#1fb457;color:#06240f}
 .cright{display:grid;gap:12px}.cright .map{width:100%;height:200px;border:0;border-radius:14px}
-.cot{background:var(--navy);color:#fff;border-radius:14px;padding:14px 16px;display:grid;gap:8px}.cot h3{font:600 18px Oswald,sans-serif;text-transform:uppercase;margin:0}
+.cot{background:var(--navy);color:#fff;border-radius:14px;padding:14px 16px;display:grid;gap:8px}.cot h3{font:600 18px "Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;margin:0}
 .cf{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(max-width:420px){.cf{grid-template-columns:1fr}}
 .cot input,.cot select,.cot textarea{width:100%;padding:9px 10px;border-radius:8px;border:0;font:inherit;font-size:15px;color:#111}.cot textarea{resize:vertical}.cot .btn{width:100%;border:0;cursor:pointer;font-size:15px;padding:10px}
 .contact{display:grid;gap:36px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .contact ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
 .contact li{display:flex;gap:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
-.contact b{min-width:96px;font:500 16px Oswald,sans-serif;text-transform:uppercase;color:var(--blue)}
+.contact b{min-width:96px;font:500 16px "Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;color:var(--blue)}
 .contact a{overflow-wrap:anywhere}
 .map{border:0;width:100%;min-height:300px;height:100%;border-radius:12px}
 .phead{background:linear-gradient(rgba(13,23,38,.9),rgba(13,23,38,.96)),repeating-linear-gradient(45deg,#1b2a40 0 14px,#142033 14px 28px);color:#fff;padding:52px 0}
@@ -125,7 +125,7 @@ footer.main .cols{display:grid;gap:32px;grid-template-columns:repeat(auto-fit,mi
 footer.main h3{color:#fff;font-size:18px;margin-bottom:14px}
 footer.main a{text-decoration:none;display:block;padding:3px 0;overflow-wrap:anywhere}
 footer.main a:hover{color:var(--accent)}
-footer.main .fl{display:flex;align-items:center;gap:12px;margin-bottom:12px;color:#fff;font:700 18px Oswald,sans-serif;text-transform:uppercase}
+footer.main .fl{display:flex;align-items:center;gap:12px;margin-bottom:12px;color:#fff;font:700 18px "Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase}
 footer.main .fl img{width:52px;height:52px;border-radius:50%;border:2px solid var(--accent)}
 .copy{border-top:1px solid #24344d;margin-top:36px;padding:18px 0;text-align:center;font-size:14px}
 .wag{position:fixed;right:18px;bottom:18px;z-index:60;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
@@ -181,18 +181,18 @@ footer.main .fl img{width:52px;height:52px;border-radius:50%;border:2px solid va
 /* Barra fija de contacto en celular */
 .mbar{display:none}
 @media(max-width:760px){.mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:70;background:#0d1726;box-shadow:0 -4px 18px rgba(0,0,0,.25);padding-bottom:env(safe-area-inset-bottom)}
-.mbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px 8px;color:#fff;text-decoration:none;font:600 12px Inter,system-ui,sans-serif}
+.mbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 4px 8px;color:#fff;text-decoration:none;font:600 12px Barlow,system-ui,sans-serif}
 .mbar a svg{width:22px;height:22px}.mbar a.w{background:#25d366;color:#fff}
 body{padding-bottom:64px}.wag{display:none!important}}
 /* Cómo trabajamos */
 .how{padding:56px 0;background:var(--navy);color:#fff}.how .head h2{color:#fff}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:46px}
 .stats div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px 12px;text-align:center}
-.stats b{display:block;font:400 clamp(28px,4vw,40px) Anton,Oswald,sans-serif;color:var(--accent);font-style:italic;letter-spacing:.5px}
+.stats b{display:block;font:800 clamp(30px,4.4vw,46px) "Barlow Condensed","Arial Narrow",sans-serif;color:var(--accent);font-style:italic;letter-spacing:.5px}
 .stats span{font-size:14px;color:#cbd3de}
 .steps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
 .steps li{position:relative;background:#fff;color:var(--text);border-radius:14px;padding:26px 18px 18px;counter-increment:s}
-.steps li::before{content:counter(s);position:absolute;top:-14px;left:18px;background:var(--accent);color:#111;font:700 15px Inter,sans-serif;width:30px;height:30px;border-radius:50%;display:grid;place-items:center}
+.steps li::before{content:counter(s);position:absolute;top:-14px;left:18px;background:var(--accent);color:#111;font:700 15px Barlow,sans-serif;width:30px;height:30px;border-radius:50%;display:grid;place-items:center}
 .steps i{font-style:normal;font-size:30px;display:block;margin-bottom:6px}.steps h3{font-size:18px;margin:0 0 6px}.steps p{margin:0;color:var(--muted);font-size:15px}
 .how-cta{text-align:center;margin:30px 0 0}
 @media(max-width:900px){.stats,.steps{grid-template-columns:1fr 1fr}}
@@ -214,7 +214,7 @@ body{padding-bottom:64px}.wag{display:none!important}}
 .mini:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(13,23,38,.12);border-color:var(--accent)}
 .mini img{width:96px;height:96px;object-fit:cover;border-radius:10px;flex:0 0 96px}
 .mini span{display:flex;flex-direction:column;gap:3px;min-width:0}
-.mini b{font:600 17px Oswald,sans-serif;text-transform:uppercase;line-height:1.15}
+.mini b{font:600 17px "Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;line-height:1.15}
 .mini small{font-size:13.5px;color:var(--muted);line-height:1.35}
 .mini i{font-style:normal;font-weight:700;font-size:13.5px;color:var(--blue)}
 .zonas{margin:22px 0 0;text-align:center;font-size:15px;color:var(--muted);line-height:1.8}
@@ -244,7 +244,7 @@ body{padding-bottom:64px}.wag{display:none!important}}
 .ci svg{width:22px;height:22px}
 .ctop{display:flex;gap:12px;align-items:center;background:var(--navy);color:#fff;padding:14px 20px;border-bottom:4px solid var(--accent)}
 .ctop img{border-radius:50%;background:#fff;flex:none}
-.ctop b{display:block;font:600 19px Oswald,sans-serif;text-transform:uppercase;letter-spacing:.3px}
+.ctop b{display:block;font:600 19px "Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.3px}
 .cstat{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:#cbd3de;margin-top:2px}
 .cstat::before{content:"";width:9px;height:9px;border-radius:50%;background:#94a3b8;flex:none}
 .cstat.on{color:#4ade80;font-weight:600}.cstat.on::before{background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:cpulse 1.8s infinite}
@@ -275,6 +275,51 @@ body{padding-bottom:64px}.wag{display:none!important}}
 
 /* etiqueta NUEVO */
 .gal figure,.vid figure{position:relative}
-.nuevo{position:absolute;top:10px;left:10px;z-index:2;background:#e11d48;color:#fff;font:700 12px/1 Inter,sans-serif;letter-spacing:.6px;text-transform:uppercase;padding:6px 9px;border-radius:6px;box-shadow:0 3px 10px rgba(225,29,72,.4);pointer-events:none;animation:nvo 2.4s ease-in-out infinite}
+.nuevo{position:absolute;top:10px;left:10px;z-index:2;background:#e11d48;color:#fff;font:700 12px/1 Barlow,sans-serif;letter-spacing:.6px;text-transform:uppercase;padding:6px 9px;border-radius:6px;box-shadow:0 3px 10px rgba(225,29,72,.4);pointer-events:none;animation:nvo 2.4s ease-in-out infinite}
 @keyframes nvo{50%{transform:scale(1.08)}}
 @media(prefers-reduced-motion:reduce){.nuevo{animation:none}}
+
+/* ===== Tipografía Barlow (industrial) ===== */
+body{font-family:Barlow,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"kern","lnum"}
+h1,h2,h3{font-family:"Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;line-height:1.02;letter-spacing:.005em}
+h1,h2{font-weight:800;font-style:italic}
+h3{font-weight:700;letter-spacing:.02em;line-height:1.1}
+.slide h1,.slide .h1{font-weight:800;font-size:clamp(40px,7vw,72px);line-height:.98}
+.phead h1{font-size:clamp(38px,6.5vw,62px)}
+.head h2{font-size:clamp(32px,4.6vw,48px)}
+.about h2{font-size:clamp(30px,4.4vw,44px)}
+.card h3{font-size:23px}
+.steps h3{font-size:20px}
+.eyebrow{font:700 15px "Barlow Condensed",sans-serif;letter-spacing:.2em}
+p{text-wrap:pretty}
+.head p,.slide p,.phead p{font-size:18px}
+/* menú (pestañas) */
+nav.menu a{font:700 17px "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.06em;position:relative;padding:10px 14px}
+nav.menu>ul>li>a:not(.cta)::after{content:"";position:absolute;left:14px;right:14px;bottom:4px;height:3px;border-radius:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+nav.menu>ul>li>a:not(.cta):hover::after,nav.menu>ul>li>a.on::after{transform:scaleX(1)}
+nav.menu .sub a{font:600 15.5px Barlow,sans-serif;text-transform:none;letter-spacing:0;padding:9px 12px}
+nav.menu .sub a:hover{background:var(--alt)}
+nav.menu .cta{padding:10px 18px;border-radius:8px;box-shadow:0 4px 14px rgba(232,137,12,.35)}
+/* botones */
+.btn,.cb,.so,.mini i,.more,.ccopy{font-family:"Barlow Condensed",sans-serif;letter-spacing:.04em}
+.btn{font-size:18px;font-weight:700;text-transform:uppercase;padding:12px 26px}
+.cb{font-size:16px;font-weight:700}
+.so{font-size:16px;font-weight:700;text-transform:uppercase}
+.more{font-weight:700;font-size:16px;text-transform:uppercase}
+/* detalles */
+.topbar{font-weight:500;font-size:14.5px}
+.mini b{font:700 19px "Barlow Condensed",sans-serif}
+.ctop b{font:800 22px "Barlow Condensed",sans-serif;letter-spacing:.02em}
+.pn span{font:800 21px "Barlow Condensed",sans-serif;letter-spacing:.03em}
+.hrs{font-size:16px}
+.gal figcaption{font-size:15.5px;font-weight:600}
+.vid figcaption{font-size:15px}
+.mbar a,.mbar span{font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+footer.main h3{font-size:20px}
+footer.main{font-size:16px}
+.cot h3{font:800 22px "Barlow Condensed",sans-serif;font-style:italic}
+.cot label{font-size:14px}
+.nuevo{font-family:"Barlow Condensed",sans-serif;font-size:14px;letter-spacing:.08em}
+@media(max-width:860px){nav.menu a{font-size:19px;padding:12px 10px}nav.menu>ul>li>a:not(.cta)::after{left:10px;right:auto;width:40px}}
+@media(max-width:600px){body{font-size:16.5px}.head p{font-size:16.5px}}
+.slide .h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:800;font-style:italic;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0}
