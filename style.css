@@ -323,3 +323,40 @@ footer.main{font-size:16px}
 @media(max-width:860px){nav.menu a{font-size:19px;padding:12px 10px}nav.menu>ul>li>a:not(.cta)::after{left:10px;right:auto;width:40px}}
 @media(max-width:600px){body{font-size:16.5px}.head p{font-size:16.5px}}
 .slide .h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:800;font-style:italic;text-transform:uppercase;letter-spacing:.005em;color:#fff;margin:0}
+/* ===== Guías, calculadora, compartir ===== */
+.txtw{max-width:820px}
+.txtw h2{font-size:clamp(28px,4vw,38px);margin:34px 0 12px}
+.txtw p,.txtw li{font-size:17.5px}
+.lead{font-size:20px!important;line-height:1.55;color:var(--text);font-weight:500}
+.fig{margin:22px 0}.fig img{width:100%;height:auto;border-radius:14px;display:block;aspect-ratio:3/2;object-fit:cover}.fig figcaption{font-size:14.5px;color:var(--muted);margin-top:6px}
+.opts{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr))}
+.opts>div{background:var(--bg);border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:12px;padding:16px 18px}
+.opts h3{font-size:22px;margin:0 0 6px}.opts p{margin:0 0 8px;font-size:16px}
+.alt .opts>div{background:var(--bg)}
+.chk{list-style:none;padding:0;margin:12px 0}.chk li{position:relative;padding:6px 0 6px 32px}.chk li::before{content:"✓";position:absolute;left:0;top:6px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#111;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+.aviso{background:rgba(232,137,12,.1);border:1px solid rgba(232,137,12,.4);border-radius:12px;padding:14px 16px;font-size:16px!important}
+.formula{font:800 italic clamp(24px,4vw,34px) "Barlow Condensed",sans-serif;background:var(--navy);color:var(--accent);padding:14px 20px;border-radius:12px;display:inline-block;letter-spacing:.03em}
+.vs{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));margin:20px 0}
+.vs>div{border:1px solid var(--line);border-radius:16px;padding:18px;background:var(--bg)}.vs h2{margin:0 0 10px}.vs img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:10px}
+.calc-wrap{display:grid;gap:28px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+@media(max-width:860px){.calc-wrap{grid-template-columns:1fr}}
+.calc{background:var(--navy);color:#fff;border-radius:16px;padding:20px;display:grid;gap:12px;border-top:5px solid var(--accent);box-shadow:0 12px 30px rgba(13,23,38,.2)}
+.calc h2{color:#fff;font-size:30px;margin:0}
+.calc label{display:grid;gap:5px;font-weight:600;font-size:15px;color:#cbd3de}.calc small{font-weight:400;opacity:.8}
+.calc input{font:700 20px Barlow,sans-serif;padding:10px 12px;border-radius:10px;border:2px solid transparent;width:100%}.calc input:focus{outline:none;border-color:var(--accent)}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0}
+.res>div{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 12px}
+.res span{display:block;font-size:13px;color:#cbd3de}.res b{font:800 italic 30px "Barlow Condensed",sans-serif;color:var(--accent)}
+.res p{grid-column:1/-1;margin:0}.res .err{color:#fbbf24}
+.calc .btn{text-align:center;background:#25d366;border-color:#25d366;color:#06240f}
+.note{font-size:13px;color:#9fb0c3;margin:0}
+.arcsvg{width:100%;max-width:420px;height:auto;color:var(--text)}
+.pasos{padding-left:22px}.pasos li{margin:6px 0}
+.share{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:28px 0 6px;padding:14px 0;border-top:1px solid var(--line)}
+.share span{font-weight:600;color:var(--muted);margin-right:4px}
+.sh{display:inline-flex;align-items:center;padding:8px 14px;border-radius:999px;font:700 15px "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;border:0;cursor:pointer;color:#fff}
+.sh.wa{background:#25d366;color:#06240f}.sh.fb{background:#1877f2}.sh.cp{background:var(--alt);color:var(--text);border:1px solid var(--line)}
+.ctab{background:var(--navy);padding:34px 0}.ctab .wrap{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.ctab b{display:block;font:800 italic clamp(24px,3.4vw,34px)/1.1 "Barlow Condensed",sans-serif;text-transform:uppercase;color:#fff}.ctab span{color:#cbd3de;font-size:15.5px}
+.guias-sec .gcard .pic img,.gcard .pic img{aspect-ratio:3/2;width:100%;object-fit:cover;display:block}
+.txt+.txt{margin-top:10px}

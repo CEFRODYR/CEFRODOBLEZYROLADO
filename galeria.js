@@ -44,6 +44,7 @@ document.querySelectorAll('.auto').forEach(function(box){
  }).catch(function(){});
 });
 document.querySelectorAll('.yr').forEach(function(e){e.textContent=HOY.slice(0,4)});
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.sh.cp');if(!b)return;try{navigator.clipboard.writeText(b.dataset.u).then(function(){b.textContent='¡Enlace copiado!';setTimeout(function(){b.textContent='Copiar enlace'},1800)})}catch(x){}});
 document.addEventListener('play',function(e){[].forEach.call(document.querySelectorAll('.auto video'),function(v){if(v!==e.target)v.pause()})},true);
 /* Ver fotos en grande */
 document.addEventListener('click',function(e){var im=e.target.closest&&e.target.closest('.gal.auto img');if(!im)return;
