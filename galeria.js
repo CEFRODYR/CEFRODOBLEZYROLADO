@@ -43,6 +43,12 @@ document.querySelectorAll('.auto').forEach(function(box){
   }).join('');
  }).catch(function(){});
 });
+/* Aviso arriba de la web (window.CEFRO_AVISO, lo maneja el panel) */
+(function(){var a=window.CEFRO_AVISO||{};if(!a.t||(a.d&&a.d>HOY)||(a.h&&a.h<HOY))return;var key='cefro:av:'+a.t;try{if(sessionStorage.getItem(key))return}catch(e){}
+ var d=document.createElement(a.u?'a':'div');d.className='avbar '+(a.k||'info');if(a.u){d.href=a.u;if(/^https?:/.test(a.u)){d.target='_blank';d.rel='noopener'}}
+ d.innerHTML='<span>'+esc(a.t)+(a.u?' <u>Ver más →</u>':'')+'</span><button type="button" aria-label="Cerrar aviso">×</button>';
+ d.querySelector('button').onclick=function(e){e.preventDefault();e.stopPropagation();d.remove();try{sessionStorage.setItem(key,'1')}catch(x){}};
+ document.body.insertBefore(d,document.body.firstChild)})();
 document.querySelectorAll('.yr').forEach(function(e){e.textContent=HOY.slice(0,4)});
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.sh.cp');if(!b)return;try{navigator.clipboard.writeText(b.dataset.u).then(function(){b.textContent='¡Enlace copiado!';setTimeout(function(){b.textContent='Copiar enlace'},1800)})}catch(x){}});
 document.addEventListener('play',function(e){[].forEach.call(document.querySelectorAll('.auto video'),function(v){if(v!==e.target)v.pause()})},true);

@@ -58,6 +58,20 @@ body,button,input,select,textarea{font-family:Barlow,system-ui,sans-serif}body{f
 .tabs button{font:700 17px "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.05em;padding:12px 10px}
 h1,h2,.card>h2,header b{font-family:"Barlow Condensed",sans-serif;letter-spacing:.02em}
 .pills button{font-family:Barlow,sans-serif;font-weight:600}
+.qa{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:10px;margin-top:10px}
+.qa button,.qa a{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:14px;padding:14px;text-decoration:none;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s;font:inherit}
+.qa button:hover,.qa a:hover{transform:translateY(-2px);border-color:var(--pr);box-shadow:0 8px 20px rgba(0,0,0,.08)}
+.qa i{font-style:normal;font-size:30px;line-height:1.1}.qa b{font:700 19px "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.03em}.qa span{font-size:13px;color:var(--mu);font-weight:400}
+.avbar{display:block;padding:10px 14px;border-radius:10px;font-weight:600;color:#fff;background:#e8890c}.avbar.imp{background:#dc2626}.avbar.promo{background:#16a34a}
+.kpi2{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.kpi2 div{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:12px;text-align:center}.kpi2 b{display:block;font:800 32px "Barlow Condensed",sans-serif;color:var(--pr)}.kpi2 span{font-size:13px;color:var(--mu)}
+.scs{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:8px}.sc{display:flex;gap:8px;align-items:center;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:8px 10px;text-align:left;font:inherit;cursor:pointer}.sc:hover{border-color:var(--pr)}.sc b{font:800 22px "Barlow Condensed",sans-serif;color:var(--pr);min-width:30px}.sc span{font-size:13px;line-height:1.2}
+.pg{margin-bottom:10px}.pgt{display:block;font:700 13px "Barlow Condensed",sans-serif;text-transform:uppercase;letter-spacing:.08em;color:var(--mu);margin-bottom:5px}.pgb{display:flex;flex-wrap:wrap;gap:8px}
+#bmes{width:auto;padding:8px 12px;border-radius:999px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-weight:600;font-size:14px}#bmes.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.where{background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.25);border-radius:10px;padding:8px 12px;font-size:14px;margin:4px 0 12px}.where.trash{background:rgba(185,28,28,.08);border-color:rgba(185,28,28,.3)}
+#home label{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}#home input,#home select{width:100%}
+#home details{border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-bottom:8px}#home summary{cursor:pointer;font-weight:600}
+@media(max-width:600px){.kpi2 b{font-size:26px}.qa{grid-template-columns:1fr 1fr}.qa b{font-size:16px}.qa span{display:none}}
+
 </style></head><body>
 <header><h1>🛠️ Panel de administración · CEFRO Doblez y Rolado</h1><span><a href="index.html" target="_blank">Ver página ↗</a> &nbsp; <button class="g" id="out" style="color:#fff;padding:6px 12px">Salir</button></span></header>
 <main>
@@ -70,14 +84,48 @@ h1,h2,.card>h2,header b{font-family:"Barlow Condensed",sans-serif;letter-spacing
 
 <div id="app" class="hide">
 <div class="tabs">
-<button class="on" data-t="media">📷 Fotos y videos</button>
+<button class="on" data-t="home">🏠 Inicio</button>
+<button data-t="media">📷 Fotos y videos</button>
 <button data-t="text">✏️ Editar páginas</button>
 <button data-t="data">📞 Datos de contacto</button>
 <button data-t="vis">📊 Visitas</button>
 </div>
 
+<!-- INICIO -->
+<div id="home">
+<div class="card hello"><h2>👋 ¿Qué quiere hacer hoy?</h2><p class="s">Toque una opción. Los cambios se ven en su página web en 1 a 3 minutos.</p>
+<div class="qa">
+<button data-go="media"><i>📷</i><b>Subir fotos o videos</b><span>Trabajos, maquinaria, afiches, reels</span></button>
+<button data-go="banners"><i>🖼</i><b>Cambiar los banners</b><span>El carrusel grande del inicio</span></button>
+<button data-go="text"><i>✏️</i><b>Cambiar textos o fotos</b><span>Haga clic en la página y escriba</span></button>
+<button data-go="aviso"><i>📢</i><b>Poner un aviso</b><span>Feriado, vacaciones o promoción</span></button>
+<button data-go="data"><i>📞</i><b>Cambiar teléfono o datos</b><span>En todas las páginas a la vez</span></button>
+<button data-go="vis"><i>📊</i><b>Ver mis visitas</b><span>Cuántas personas entraron</span></button>
+<button data-go="trash"><i>🗑</i><b>Papelera</b><span>Recuperar algo borrado</span></button>
+<a href="index.html" target="_blank"><i>🌐</i><b>Ver mi página</b><span>cefrodr.com ↗</span></a>
+</div></div>
+<div class="card" id="avisoCard"><h2>📢 Aviso en la parte de arriba de la web</h2>
+<p class="s">Para avisar feriados, vacaciones, promociones o cambios de horario. Se muestra en todas las páginas y se quita solo en la fecha que usted elija.</p>
+<div id="avnow"></div>
+<label>Texto del aviso <small>(máximo 140 letras)</small></label><input id="av_t" maxlength="140" placeholder="Ej: El martes 8 de diciembre no atendemos por feriado. ¡Escríbenos por WhatsApp!">
+<div class="two"><div><label>Color</label><select id="av_k"><option value="info">🟠 Naranja (información)</option><option value="imp">🔴 Rojo (importante)</option><option value="promo">🟢 Verde (promoción)</option></select></div>
+<div><label>Al tocar el aviso, abrir…</label><select id="av_u"><option value="">Nada</option><option value="wa">WhatsApp</option><option value="contacto">Contacto</option><option value="calc">Calculadora de techos</option><option value="otro">Otro enlace…</option></select><input id="av_uo" class="hide" placeholder="https://… o página.html" style="margin-top:6px"></div></div>
+<div class="two"><div><label>Mostrar desde <small>(vacío = desde hoy)</small></label><input type="date" id="av_d"></div><div><label>Quitar después de <small>(vacío = no se quita solo)</small></label><input type="date" id="av_h"></div></div>
+<label>Vista previa</label><div id="avprev"></div>
+<p><button id="av_go">💾 Publicar aviso</button> <button class="g" id="av_off">Quitar aviso</button></p><div id="avm"></div></div>
+<div class="card" id="sumCard"><h2>📋 Resumen de su página</h2><div id="sum"><p class="s">Cargando…</p></div></div>
+<div class="card"><h2>❓ Ayuda rápida</h2>
+<details><summary>¿Cómo subo fotos de un trabajo nuevo?</summary><p>Toque «Subir fotos o videos», elija la sección (por ejemplo «Techos parabólicos») y arrastre las fotos o pulse el recuadro para elegirlas. Escriba un pie de foto y pulse «Guardar cambios».</p></details>
+<details><summary>¿Cómo programo una foto o promoción para otro día?</summary><p>Cada foto tiene dos fechas: «Publicar desde» y «Ocultar después de». Póngalas y pulse «Guardar cambios». La web la muestra y la quita sola.</p></details>
+<details><summary>Borré una foto por error</summary><p>Entre a «🗑 Papelera» y pulse «♻️ Restaurar». Vuelve a su sección.</p></details>
+<details><summary>¿Cómo cambio un texto de la página?</summary><p>Toque «Cambiar textos o fotos», elija la página arriba, haga clic sobre el texto y escriba. Al terminar pulse «Guardar cambios».</p></details>
+<details><summary>¿Cuánto tarda en verse un cambio?</summary><p>Entre 1 y 3 minutos. Si no lo ve, recargue la página con Ctrl+F5 (en el celular, cierre y vuelva a abrir el navegador).</p></details>
+</div>
+
+</div>
+
 <!-- FOTOS -->
-<div id="media">
+<div id="media" class="hide">
 <div class="card">
 <h2>1. Elija la sección de la página</h2>
 <div class="pills" id="pills"></div>
@@ -167,7 +215,7 @@ h1,h2,.card>h2,header b{font-family:"Barlow Condensed",sans-serif;letter-spacing
 var REPO='CEFRODYR/cefrodoblezyrolado',BR='main',API='https://api.github.com/repos/'+REPO+'/contents/';
 var NAMES={'index.html':'Inicio','techo-parabolico.html':'Techos parabólicos','techos-parabolicos-coberturas-coliseos.html':'Coberturas y coliseos','rolado-de-tubo.html':'Rolado de tubo','rolado-de-tubo-rectangular.html':'Rolado de tubo rectangular','rolado-de-angulo-platina-canaleta.html':'Ángulo, platina y canaletas','tubos-schedule.html':'Tubos schedule','doblez-de-tubo.html':'Doblez de tubo','barandas-y-pasamanos.html':'Barandas y pasamanos','soldadura.html':'Soldadura','obras.html':'Nuestras obras','doblez-y-rolado-lima-norte.html':'Lima Norte','guias.html':'Guías','calculadora-techo-parabolico.html':'Guía: calculadora','que-tubo-usar-techo-parabolico.html':'Guía: qué tubo usar','diferencia-rolado-y-doblez-de-tubos.html':'Guía: rolado vs. doblez'};
 var PAGES=Object.keys(NAMES).map(function(k){return[k,NAMES[k]]});
-var FOLDERS=[['afiches','Afiches (inicio, primero)'],['reels','Videos reels (inicio)'],['techos-parabolicos','Techos parabólicos'],['rolado','Rolado de tubo'],['doblez','Doblez de tubo'],['soldadura','Soldadura'],['obras','Nuestras obras'],['maquinaria','Maquinaria (inicio)'],['videos','Videos (inicio)'],['banners','Banners · todo el año'],['banners-enero','Banners · Enero'],['banners-febrero','Banners · Febrero'],['banners-marzo','Banners · Marzo'],['banners-abril','Banners · Abril'],['banners-mayo','Banners · Mayo'],['banners-junio','Banners · Junio'],['banners-julio','Banners · Julio'],['banners-agosto','Banners · Agosto'],['banners-septiembre','Banners · Septiembre'],['banners-octubre','Banners · Octubre'],['banners-noviembre','Banners · Noviembre'],['banners-diciembre','Banners · Diciembre']];
+var FOLDERS=[['afiches','Afiches (inicio, primero)'],['reels','Videos reels (inicio)'],['techos-parabolicos','Techos parabólicos'],['rolado','Rolado de tubo'],['doblez','Doblez de tubo'],['soldadura','Soldadura'],['obras','Nuestras obras'],['maquinaria','Maquinaria (inicio)'],['videos','Videos (inicio)'],['_papelera','🗑 Papelera'],['banners','Banners · todo el año'],['banners-enero','Banners · Enero'],['banners-febrero','Banners · Febrero'],['banners-marzo','Banners · Marzo'],['banners-abril','Banners · Abril'],['banners-mayo','Banners · Mayo'],['banners-junio','Banners · Junio'],['banners-julio','Banners · Julio'],['banners-agosto','Banners · Agosto'],['banners-septiembre','Banners · Septiembre'],['banners-octubre','Banners · Octubre'],['banners-noviembre','Banners · Noviembre'],['banners-diciembre','Banners · Diciembre']];
 var $=function(i){return document.getElementById(i)},TK='',FOLDER='techos-parabolicos';
 try{TK=localStorage.getItem('cefro_tk')||''}catch(e){}
 function gh(path,opt){opt=opt||{};opt.headers={Authorization:'Bearer '+TK,Accept:'application/vnd.github+json'};
@@ -185,20 +233,21 @@ var known=PAGES.map(function(p){return p[0]});
 PAGES=PAGES.filter(function(p){return (root||[]).some(function(f){return f.name==p[0]})});
 $('login').classList.add('hide');$('app').classList.remove('hide');
 $('page').innerHTML=PAGES.map(function(p){return '<option value="'+p[0]+'">'+esc(p[1])+'</option>'}).join('');
-buildPills();loadDesc().then(loadList);loadPage()}).catch(function(e){$('login').classList.remove('hide');msg('lm','No se pudo entrar: '+esc(e.message)+'. Revise el token y sus permisos.','e')})}
+buildPills();loadDesc().then(function(){loadList();fillAviso();loadSummary()});loadPage()}).catch(function(e){$('login').classList.remove('hide');msg('lm','No se pudo entrar: '+esc(e.message)+'. Revise el token y sus permisos.','e')})}
 $('in').onclick=function(){TK=$('tok').value.trim();try{localStorage.setItem('cefro_tk',TK)}catch(e){}start()};
 $('tok').onkeydown=function(e){if(e.key=='Enter')$('in').click()};
 $('out').onclick=function(){if(anyDirty()&&!confirm('Tiene cambios sin guardar. ¿Salir igual?'))return;try{localStorage.removeItem('cefro_tk')}catch(e){}location.reload()};
 if(TK)start();
 function anyDirty(){return DIRTY||MDIRTY}
-var TAB='media';
+var TAB='home';
+function goTab(t){var b=document.querySelector('.tabs button[data-t="'+t+'"]');if(b)b.click();window.scrollTo({top:0,behavior:'smooth'})}
 document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){
 if(b.dataset.t==TAB)return;
 if(TAB=='text'&&DIRTY&&!confirm('Tiene cambios sin guardar en el editor. ¿Salir sin guardar?'))return;
 if(TAB=='media'&&MDIRTY&&!confirm('Tiene cambios sin guardar en las fotos. ¿Salir sin guardar?'))return;
 if(TAB=='text'&&DIRTY)loadPage();if(TAB=='media'&&MDIRTY)loadDesc().then(loadList);
 TAB=b.dataset.t;
-document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on',x===b)});['media','text','data','vis'].forEach(function(t){$(t).classList.toggle('hide',b.dataset.t!=t)});if(b.dataset.t=='vis')visOpen()}});
+document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on',x===b)});['home','media','text','data','vis'].forEach(function(t){$(t).classList.toggle('hide',b.dataset.t!=t)});if(b.dataset.t=='vis')visOpen();if(b.dataset.t=='home')loadSummary()}});
 window.onbeforeunload=function(){if(anyDirty())return 'Tiene cambios sin guardar'};
 
 /* ---------- visitas (GoatCounter) ---------- */
@@ -261,10 +310,10 @@ $('gout').onclick=function(){try{localStorage.removeItem('cefro_gc')}catch(e){}G
 
 /* ---------- fotos y videos ---------- */
 var IMG=/\.(jpe?g|png|webp|gif|avif)$/i,VID=/\.(mp4|webm|mov)$/i;
-var DESC={},ORDER={},META={},POST={},DSHA='',DTXT='',ITEMS=[],MDIRTY=false,COUNTS={};
-function loadDesc(){return gh('descripciones.js?ref='+BR+'&t='+Date.now()).then(function(j){DSHA=j.sha;DTXT=dec(j.content);var w={};try{new Function('window',DTXT)(w)}catch(e){}DESC=w.CEFRO_DESC||{};ORDER=w.CEFRO_ORDER||{};META=w.CEFRO_META||{}}).catch(function(e){if(!/^404/.test(e.message))throw e;DSHA='';DESC={};ORDER={};META={}})}
+var DESC={},ORDER={},META={},POST={},AVISO={},DSHA='',DTXT='',ITEMS=[],MDIRTY=false,COUNTS={};
+function loadDesc(){return gh('descripciones.js?ref='+BR+'&t='+Date.now()).then(function(j){DSHA=j.sha;DTXT=dec(j.content);var w={};try{new Function('window',DTXT)(w)}catch(e){}DESC=w.CEFRO_DESC||{};ORDER=w.CEFRO_ORDER||{};META=w.CEFRO_META||{};AVISO=w.CEFRO_AVISO||{}}).catch(function(e){if(!/^404/.test(e.message))throw e;DSHA='';DESC={};ORDER={};META={};AVISO={}})}
 function objLines(o,fn){var ks=Object.keys(o).sort();return '{\n'+ks.map(function(k){return JSON.stringify(k)+':'+fn(o[k])}).join(',\n')+'\n}'}
-function descText(){return '// Descripciones (pie de foto) y orden de las fotos y videos de las galerías.\n// Clave: carpeta/archivo. Este archivo lo actualiza el panel de administración (admin.html).\nwindow.CEFRO_DESC='+objLines(DESC,JSON.stringify)+';\nwindow.CEFRO_ORDER='+objLines(ORDER,function(a){return JSON.stringify(a)})+';\n// Fechas: u=subido, d=publicar desde, h=ocultar después de (AAAA-MM-DD)\nwindow.CEFRO_META='+objLines(META,JSON.stringify)+';\n'}
+function descText(){return '// Descripciones (pie de foto) y orden de las fotos y videos de las galerías.\n// Clave: carpeta/archivo. Este archivo lo actualiza el panel de administración (admin.html).\nwindow.CEFRO_DESC='+objLines(DESC,JSON.stringify)+';\nwindow.CEFRO_ORDER='+objLines(ORDER,function(a){return JSON.stringify(a)})+';\n// Fechas: u=subido, d=publicar desde, h=ocultar después de (AAAA-MM-DD)\nwindow.CEFRO_META='+objLines(META,JSON.stringify)+';\n// Aviso en la parte de arriba de la web (lo maneja el panel)\nwindow.CEFRO_AVISO='+JSON.stringify(AVISO)+';\n'}
 function saveDesc(why){var body={message:why||'Actualiza orden y descripciones de fotos',content:enc(descText()),branch:BR};if(DSHA)body.sha=DSHA;
 return gh('descripciones.js',{method:'PUT',body:JSON.stringify(body)}).then(function(j){DSHA=j.content.sha;setTimeout(function(){regenSitemap().catch(function(e){console.warn('sitemap',e)})},300)})}
 function setM(v){MDIRTY=v;$('msave').classList.toggle('hide',!v)}
@@ -308,8 +357,19 @@ async function regenSitemap(){if(SMBUSY)return;SMBUSY=true;try{
 function bnrHint(){var h=$('bnrhint');if(!h){h=document.createElement('p');h.id='bnrhint';h.style.cssText='background:#fff6e5;border:1px solid #f0c36d;border-radius:10px;padding:10px 14px;margin:0 0 12px;font-size:14px;line-height:1.5';$('pills').parentNode.insertBefore(h,$('pills').nextSibling)}
  if(!/^banners/.test(FOLDER)){h.style.display='none';return}h.style.display='';
  h.innerHTML=FOLDER=='banners'?'🔁 <b>Banners de todo el año.</b> Salen en el carrusel del inicio todos los meses; cada mes la web empieza solita por un banner distinto. Tamaño ideal: <b>1200 × 600</b> px (el doble de ancho que de alto).':'📅 <b>Banners solo para '+FOLDER.replace('banners-','').toUpperCase()+'.</b> Durante ese mes aparecen primero en el carrusel, antes que los de todo el año. Al terminar el mes se ocultan solos (y vuelven el próximo año). Tamaño ideal: <b>1200 × 600</b> px.'}
-function buildPills(){setTimeout(bnrHint);$('pills').innerHTML=FOLDERS.map(function(f){return '<button data-f="'+f[0]+'" class="'+(f[0]==FOLDER?'on':'')+'">'+f[1]+(COUNTS[f[0]]!=null?'<small>('+COUNTS[f[0]]+')</small>':'')+'</button>'}).join('');
-$('pills').querySelectorAll('button').forEach(function(b){b.onclick=function(){if(b.dataset.f==FOLDER)return;if(MDIRTY&&!confirm('Tiene cambios sin guardar en esta sección. ¿Cambiar de sección sin guardar?'))return;if(MDIRTY){setM(false);loadDesc().then(function(){FOLDER=b.dataset.f;buildPills();loadList()});return}FOLDER=b.dataset.f;buildPills();loadList()}})}
+var GROUPS=[['🏠 Página de inicio',['afiches','reels','maquinaria','videos']],['🔧 Páginas de servicios',['techos-parabolicos','rolado','doblez','soldadura','obras']],['🖼 Banners del carrusel',['banners','MES']],['♻️ Recuperar',['_papelera']]];
+var MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+var WHERE={afiches:['Inicio › «Techos parabólicos, rolado y doblez» (afiches)','index.html#afiches'],reels:['Inicio › «Mira cómo trabajamos» (videos verticales)','index.html#reels'],maquinaria:['Inicio › «Maquinaria de alta precisión»','index.html#maquinaria'],videos:['Inicio › «Nuestros videos», y también en Nuestras obras, Rolado y Techos','index.html#videos'],'techos-parabolicos':['Página «Techos parabólicos» › galería de fotos','techo-parabolico.html'],rolado:['Página «Rolado de tubos» › galería de fotos','rolado-de-tubo.html'],doblez:['Página «Doblez de tubos» › galería de fotos','doblez-de-tubo.html'],soldadura:['Página «Soldadura» › galería de fotos','soldadura.html'],obras:['Página «Nuestras obras»','obras.html'],banners:['Inicio › carrusel grande, todos los meses','index.html#promociones'],_papelera:['No se ve en la página. Aquí puede restaurar o borrar para siempre.','']};
+function setFolder(f){if(f==FOLDER)return;if(MDIRTY&&!confirm('Tiene cambios sin guardar en esta sección. ¿Cambiar de sección sin guardar?')){buildPills();return}if(MDIRTY){setM(false);loadDesc().then(function(){FOLDER=f;buildPills();loadList()});return}FOLDER=f;buildPills();loadList()}
+function pill(f){return '<button data-f="'+f+'" class="'+(f==FOLDER?'on':'')+'">'+fname(f)+(COUNTS[f]!=null?'<small>('+COUNTS[f]+')</small>':'')+'</button>'}
+function buildPills(){setTimeout(bnrHint);var h='';GROUPS.forEach(function(g){h+='<div class="pg"><span class="pgt">'+g[0]+'</span><div class="pgb">'+g[1].map(function(f){if(f=='MES'){var on=/^banners-/.test(FOLDER);return '<select id="bmes" class="'+(on?'on':'')+'"><option value="">📅 Banners de un mes…</option>'+MESES.map(function(m){return '<option value="banners-'+m+'"'+(FOLDER=='banners-'+m?' selected':'')+'>'+m.charAt(0).toUpperCase()+m.slice(1)+(COUNTS['banners-'+m]?' ('+COUNTS['banners-'+m]+')':'')+'</option>'}).join('')+'</select>'}return pill(f)}).join('')+'</div></div>'});
+$('pills').innerHTML=h;
+$('pills').querySelectorAll('button').forEach(function(b){b.onclick=function(){setFolder(b.dataset.f)}});
+var sm=$('bmes');if(sm)sm.onchange=function(){if(sm.value)setFolder(sm.value)};
+var w=WHERE[FOLDER]||(/^banners-/.test(FOLDER)?['Inicio › carrusel grande, solo durante '+FOLDER.slice(8),'index.html#promociones']:['','']);
+var we=$('where');if(!we){we=document.createElement('p');we.id='where';$('drop').parentNode.insertBefore(we,$('drop'))}
+we.className=FOLDER=='_papelera'?'where trash':'where';we.innerHTML=w[0]?'📍 <b>Dónde se ve:</b> '+esc(w[0])+(w[1]?' · <a href="'+w[1]+'" target="_blank">Ver en la página ↗</a>':''):'';
+$('drop').classList.toggle('hide',FOLDER=='_papelera');var st=document.querySelector('#media .steps');if(st)st.classList.toggle('hide',FOLDER=='_papelera')}
 function fname(f){return FOLDERS.filter(function(x){return x[0]==f})[0][1]}
 function loadList(){$('ft').textContent='2. Fotos y videos de «'+fname(FOLDER)+'»';$('list').innerHTML='<p>Cargando…</p>';setM(false);
 return gh('imagenes/'+FOLDER+'?ref='+BR+'&t='+Date.now()).catch(function(e){if(/^404/.test(e.message))return[];throw e}).then(function(a){
@@ -320,9 +380,9 @@ ITEMS.sort(function(a,b){return (rk(a.name)-rk(b.name))||a.name.localeCompare(b.
 COUNTS[FOLDER]=ITEMS.length;buildPills();render()})}).catch(function(e){$('list').innerHTML='<p>Error: '+esc(e.message)+'</p>'})}
 function human(n){var b=n.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim();if(!b||b.replace(/\D/g,'').length>b.length/2)return '';return b.charAt(0).toUpperCase()+b.slice(1)}
 function render(){if(!ITEMS.length){$('list').innerHTML='<p class="tip" style="grid-column:1/-1;padding:20px;text-align:center">Esta sección aún no tiene fotos ni videos. Arrástrelos aquí o arriba.</p>';return}
-var opts=FOLDERS.filter(function(f){return f[0]!=FOLDER}).map(function(f){return '<option value="'+f[0]+'">'+f[1]+'</option>'}).join('');
+var TR=FOLDER=='_papelera';var opts=FOLDERS.filter(function(f){return f[0]!=FOLDER&&f[0]!='_papelera'}).map(function(f){return '<option value="'+f[0]+'">'+f[1]+'</option>'}).join('');
 var miss=ITEMS.filter(function(x){return x.v&&!POST[pname(x.name)]}).length;setTimeout(function(){var h=$('posthint');if(!h){h=document.createElement('div');h.id='posthint';$('list').parentNode.insertBefore(h,$('list'))}h.innerHTML=miss?'<p class="phint">🎞 '+miss+' video(s) sin portada (se ven negros en la página). <button id="mkpost">Crear portadas automáticamente</button></p>':'';if(miss)$('mkpost').onclick=makeMissing});
-$('list').innerHTML=ITEMS.map(function(x,i){var k=FOLDER+'/'+x.name;
+$('list').innerHTML=ITEMS.map(function(x,i){var k=FOLDER+'/'+x.name;if(TR)return trashCard(x);
 return '<div class="it" data-n="'+esc(x.name)+'"><div class="th">'+(x.v?'<video src="'+x.url+'#t=0.5" preload="metadata" muted playsinline'+(POST[pname(x.name)]?' poster="'+POST[pname(x.name)].download_url+'"':'')+'></video><span class="vt">▶ Video'+(POST[pname(x.name)]?'':' · sin portada')+'</span>':'<img loading="lazy" src="'+x.url+'" alt="">')+stBadge(k)+'<span class="num">'+(i+1)+'</span><span class="hd" title="Arrastrar para mover">✋</span></div>'+
 '<textarea class="cap" rows="2" placeholder="'+(x.v?'Título del video':'Pie de foto: ¿qué se ve?')+'">'+esc(DESC[k]!=null?DESC[k]:'')+'</textarea>'+
 '<div class="nm">'+esc(x.name)+(DESC[k]==null&&human(x.name)?' · en la página: «'+esc(human(x.name))+'»':'')+'</div>'+
@@ -334,7 +394,8 @@ $('list').addEventListener('input',function(e){if(!e.target.classList.contains('
 $('list').addEventListener('click',function(e){var b=e.target.closest('button[data-a]');if(!b)return;var it=b.closest('.it');
 if(b.dataset.a=='l'&&it.previousElementSibling){it.parentNode.insertBefore(it,it.previousElementSibling);syncOrder()}
 if(b.dataset.a=='r'&&it.nextElementSibling){it.parentNode.insertBefore(it.nextElementSibling,it);syncOrder()}
-if(b.dataset.a=='del')delItem(it.dataset.n,b)});
+if(b.dataset.a=='del'){if(FOLDER=='_papelera')delItem(it.dataset.n,b);else trashItem(it.dataset.n,b)}
+if(b.dataset.a=='res')restoreItem(it.dataset.n)});
 $('list').addEventListener('change',function(e){if(e.target.dataset.a!='mv'||!e.target.value)return;var to=e.target.value,n=e.target.closest('.it').dataset.n;
 if(!confirm('¿Mover «'+n+'» a la sección «'+fname(to)+'»?')){e.target.value='';return}moveItem(n,to)});
 /* arrastrar para ordenar (mouse y dedo) */
@@ -354,19 +415,22 @@ $('list').addEventListener('pointerup',end);$('list').addEventListener('pointerc
 $('mgo').onclick=function(){$('mgo').disabled=true;msg('um','⏳ Guardando…','w');saveDesc('Ordena y describe fotos de '+FOLDER).then(function(){setM(false);msg('um','✅ Guardado. Se verá en la página en 1 a 3 minutos.')}).catch(function(e){msg('um','No se pudo guardar: '+esc(e.message)+'. Recargue la página e intente de nuevo.','e')}).then(function(){$('mgo').disabled=false;$('um').scrollIntoView({behavior:'smooth',block:'center'})})};
 $('mundo').onclick=function(){if(!confirm('¿Descartar los cambios sin guardar?'))return;loadDesc().then(loadList)};
 function dropKeys(n){delete DESC[FOLDER+'/'+n];delete META[FOLDER+'/'+n];if(ORDER[FOLDER])ORDER[FOLDER]=ORDER[FOLDER].filter(function(x){return x!=n})}
-function delItem(n,b){if(!confirm('¿Borrar «'+n+'»? Esto no se puede deshacer.'))return;var x=ITEMS.filter(function(i){return i.name==n})[0];b.disabled=true;
+function trashFrom(n){var i=n.indexOf('__');if(i<0)return['',n];return[n.slice(0,i),n.slice(i+2)]}
+function trashItem(n,b){if(!confirm('¿Mandar «'+n+'» a la papelera?\n\nDeja de verse en la página. Si se arrepiente, lo recupera desde «🗑 Papelera» con el botón Restaurar.'))return;b.disabled=true;moveItem(n,'_papelera',FOLDER+'__'+n,'🗑 Enviado a la papelera. Si fue un error, entre a «🗑 Papelera» y pulse ♻️ Restaurar.','⏳ Enviando a la papelera…')}
+function restoreItem(n){var p=trashFrom(n);if(!p[0]||!FOLDERS.some(function(f){return f[0]==p[0]})){alert('No sé de qué sección venía. Use «Mover a…» para elegirla.');return}moveItem(n,p[0],p[1],'♻️ Restaurado en «'+fname(p[0])+'». Ya se ve otra vez en la página.','⏳ Restaurando…')}
+function delItem(n,b){if(!confirm('¿Borrar «'+n+'» para siempre? Esto no se puede deshacer.'))return;var x=ITEMS.filter(function(i){return i.name==n})[0];b.disabled=true;
 gh(x.path,{method:'DELETE',body:JSON.stringify({message:'Borra '+x.path,sha:x.sha,branch:BR})}).then(function(){var op=x.v&&POST[pname(n)];if(op)return gh(op.path,{method:'DELETE',body:JSON.stringify({message:'Borra portada '+op.path,sha:op.sha,branch:BR})}).catch(function(){})}).then(function(){syncOrderSilent();dropKeys(n);return saveDesc('Borra '+x.path)}).then(function(){msg('um','🗑 Archivo borrado. Desaparece de la página en 1–3 minutos.');loadList()}).catch(function(e){b.disabled=false;msg('um','No se pudo borrar: '+esc(e.message),'e')})}
 function syncOrderSilent(){ORDER[FOLDER]=[].map.call($('list').querySelectorAll('.it'),function(e){return e.dataset.n})}
 function b64url(u){return fetch(u+(u.indexOf('?')<0?'?':'&')+'t='+Date.now()).then(function(r){if(!r.ok)throw new Error('descarga '+r.status);return r.blob()}).then(toB64)}
 async function freeName(folder,name){var base=name.replace(/\.[^.]+$/,''),ext=(name.match(/\.[^.]+$/)||[''])[0],n=name,i=2;
 var l=await gh('imagenes/'+folder+'?ref='+BR+'&t='+Date.now()).catch(function(){return[]});var have=l.map(function(f){return f.name});
 while(have.indexOf(n)>=0){n=base+'-'+i+ext;i++}return n}
-async function moveItem(n,to){var x=ITEMS.filter(function(i){return i.name==n})[0];msg('um','⏳ Moviendo «'+esc(n)+'» a «'+fname(to)+'»…','w');
-try{var c=await b64url(x.url),nn=await freeName(to,n),np='imagenes/'+to+'/'+nn;
+async function moveItem(n,to,newName,okMsg,busyMsg){var x=ITEMS.filter(function(i){return i.name==n})[0];msg('um',busyMsg||('⏳ Moviendo «'+esc(n)+'» a «'+fname(to)+'»…'),'w');
+try{var c=await b64url(x.url),nn=await freeName(to,newName||n),np='imagenes/'+to+'/'+nn;
 await gh(np,{method:'PUT',body:JSON.stringify({message:'Mueve '+x.path+' a '+np,content:c,branch:BR})});
 await gh(x.path,{method:'DELETE',body:JSON.stringify({message:'Mueve '+x.path+' a '+np,sha:x.sha,branch:BR})});
 syncOrderSilent();var d=DESC[FOLDER+'/'+n],mt=META[FOLDER+'/'+n];dropKeys(n);if(d)DESC[to+'/'+nn]=d;if(mt)META[to+'/'+nn]=mt;if(x.v){try{await putFile('imagenes/'+to+'/portadas/'+pname(nn),await poster(x.url))}catch(e){}var op=POST[pname(n)];if(op)gh(op.path,{method:'DELETE',body:JSON.stringify({message:'Borra portada '+op.path,sha:op.sha,branch:BR})}).catch(function(){})}ORDER[to]=[nn].concat((ORDER[to]||[]).filter(function(y){return y!=nn}));
-await saveDesc('Mueve '+n+' a '+to);msg('um','✅ Movido a «'+fname(to)+'». Aparece primero en esa sección.');COUNTS[to]=null;loadList()}catch(e){msg('um','No se pudo mover: '+esc(e.message),'e');render()}}
+await saveDesc('Mueve '+n+' a '+to);msg('um',okMsg||('✅ Movido a «'+fname(to)+'». Aparece primero en esa sección.'));COUNTS[to]=null;COUNTS[FOLDER]=null;loadList()}catch(e){msg('um','No se pudo mover: '+esc(e.message),'e');render()}}
 $('drop').onclick=function(){$('file').click()};
 ['drop','list'].forEach(function(id){var z=$(id);z.addEventListener('dragover',function(e){if(e.dataTransfer&&[].indexOf.call(e.dataTransfer.types,'Files')>=0){e.preventDefault();z.classList.add('over')}});z.addEventListener('dragleave',function(){z.classList.remove('over')});
 z.addEventListener('drop',function(e){if(!e.dataTransfer||!e.dataTransfer.files.length)return;e.preventDefault();z.classList.remove('over');up(e.dataTransfer.files)})});
@@ -550,4 +614,41 @@ if(!confirm('¿Cambiar '+fmt(o)+' por '+fmt(n)+' en toda la página?'))return;
 replaceAll([['51'+o,'51'+n],[fmt(o),fmt(n)],[o,n]],'pm')};
 $('t_go').onclick=function(){var o=$('t_old').value,n=$('t_new').value;if(!o){msg('tmm','Escriba el texto actual.','e');return}
 if(!confirm('¿Reemplazar «'+o+'» por «'+n+'» en toda la página?'))return;replaceAll([[o,n]],'tmm')};
+
+/* ---------- pestaña Inicio: accesos, aviso, resumen ---------- */
+function trashCard(x){var p=trashFrom(x.name),ok=p[0]&&FOLDERS.some(function(f){return f[0]==p[0]});return '<div class="it" data-n="'+esc(x.name)+'"><div class="th">'+(x.v?'<video src="'+x.url+'#t=0.5" preload="metadata" muted playsinline></video><span class="vt">▶ Video</span>':'<img loading="lazy" src="'+x.url+'" alt="">')+'</div><div class="nm">'+esc(p[1])+'<br>Venía de: <b>'+esc(ok?fname(p[0]):'?')+'</b></div><div class="ac"><button data-a="res" title="Devolver a su sección">♻️ Restaurar</button><button data-a="del" class="x" title="Borrar para siempre">🗑 Borrar</button></div></div>'}
+document.querySelectorAll('.qa button').forEach(function(b){b.onclick=function(){var g=b.dataset.go;
+ if(g=='banners'){goTab('media');setFolder('banners');return}
+ if(g=='trash'){goTab('media');setFolder('_papelera');return}
+ if(g=='aviso'){$('avisoCard').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){$('av_t').focus()},400);return}
+ goTab(g)}});
+var AVL={wa:'https://wa.me/51992550533',contacto:'index.html#contacto',calc:'calculadora-techo-parabolico.html'};
+function avRead(){var u=$('av_u').value;return{t:$('av_t').value.replace(/\s+/g,' ').trim(),k:$('av_k').value,u:u=='otro'?$('av_uo').value.trim():(AVL[u]||''),d:$('av_d').value,h:$('av_h').value}}
+function avPrev(){var a=avRead();$('av_uo').classList.toggle('hide',$('av_u').value!='otro');$('avprev').innerHTML=a.t?'<div class="avbar '+a.k+'">'+esc(a.t)+(a.u?' <u>Ver más →</u>':'')+' <span style="float:right;opacity:.8">×</span></div>':'<p class="tip">Escriba un texto para ver cómo queda.</p>'}
+function avState(){var a=AVISO||{},H=hoy();if(!a.t){$('avnow').innerHTML='<p class="msg">Ahora <b>no hay</b> ningún aviso en la web.</p>';return}var st=a.d&&a.d>H?'⏰ Se mostrará desde el '+fdate(a.d):(a.h&&a.h<H?'⏹ Ya no se muestra (venció el '+fdate(a.h)+')':'✅ Se está mostrando ahora'+(a.h?', hasta el '+fdate(a.h):''));$('avnow').innerHTML='<p class="msg w">'+st+': «'+esc(a.t)+'»</p>'}
+function fillAviso(){var a=AVISO||{};$('av_t').value=a.t||'';$('av_k').value=a.k||'info';var u=a.u||'',key=Object.keys(AVL).filter(function(k){return AVL[k]==u})[0];$('av_u').value=u?(key||'otro'):'';$('av_uo').value=key?'':u;$('av_d').value=a.d||'';$('av_h').value=a.h||'';avPrev();avState()}
+['av_t','av_k','av_u','av_uo','av_d','av_h'].forEach(function(i){$(i).addEventListener('input',avPrev);$(i).addEventListener('change',avPrev)});
+$('av_go').onclick=function(){var a=avRead();if(!a.t){msg('avm','Escriba el texto del aviso.','e');return}if(a.d&&a.h&&a.h<a.d){msg('avm','La fecha para quitar debe ser después de la fecha de inicio.','e');return}
+ if(MDIRTY&&!confirm('Tiene cambios sin guardar en «Fotos y videos»; se guardarán también. ¿Seguir?'))return;
+ var old=AVISO;AVISO=a;$('av_go').disabled=true;msg('avm','⏳ Publicando…','w');saveDesc('Aviso en la web: '+a.t).then(function(){setM(false);avState();msg('avm','✅ Listo. El aviso se verá en la web en 1 a 3 minutos.')}).catch(function(e){AVISO=old;msg('avm','No se pudo guardar: '+esc(e.message),'e')}).then(function(){$('av_go').disabled=false})};
+$('av_off').onclick=function(){if(!AVISO||!AVISO.t){msg('avm','No hay ningún aviso publicado.');return}if(!confirm('¿Quitar el aviso de la web?'))return;var old=AVISO;AVISO={};msg('avm','⏳ Quitando…','w');saveDesc('Quita el aviso de la web').then(function(){setM(false);fillAviso();msg('avm','✅ Aviso quitado. Desaparece en 1 a 3 minutos.')}).catch(function(e){AVISO=old;msg('avm','No se pudo: '+esc(e.message),'e')})};
+var SUMBUSY=false;
+async function loadSummary(){if(SUMBUSY||!$('sum'))return;SUMBUSY=true;try{
+ var fs=['afiches','reels','techos-parabolicos','rolado','doblez','soldadura','obras','maquinaria','videos','banners'].concat(MESES.map(function(m){return 'banners-'+m}),['_papelera']);
+ var res=await Promise.all(fs.map(function(f){return gh('imagenes/'+f+'?ref='+BR+'&t='+Date.now()).catch(function(){return[]})}));
+ var H=hoy(),tot=0,cards='',prog=[],nuevos=0,vids={},trash=0;
+ fs.forEach(function(f,i){var l=(res[i]||[]).filter(function(e){return e.type=='file'&&(IMG.test(e.name)||VID.test(e.name))});COUNTS[f]=l.length;
+  if(f=='_papelera'){trash=l.length;return}tot+=l.length;
+  l.forEach(function(e){var k=f+'/'+e.name,m=META[k]||{};if(m.d&&m.d>H)prog.push([m.d,f]);var fd=m.d&&m.d>(m.u||'')?m.d:m.u;if(fd&&fd<=H&&(Date.parse(H)-Date.parse(fd))/864e5<=15)nuevos++;if(VID.test(e.name)){(vids[f]=vids[f]||[]).push(e.name)}});
+  if(!/^banners-/.test(f)||l.length)cards+='<button class="sc" data-f="'+f+'"><b>'+l.length+'</b><span>'+esc(fname(f))+'</span></button>'});
+ var miss=0;for(var f in vids){var p=await gh('imagenes/'+f+'/portadas?ref='+BR+'&t='+Date.now()).catch(function(){return[]});var pn=p.map(function(e){return e.name});vids[f].forEach(function(n){if(pn.indexOf(pname(n))<0)miss++})}
+ prog.sort();var al='';
+ if(miss)al+='<p class="msg e">🎞 Hay <b>'+miss+'</b> video(s) sin portada. Entre a su sección y pulse «Crear portadas automáticamente».</p>';
+ if(prog.length)al+='<p class="msg w">⏰ Programados: '+prog.slice(0,6).map(function(p){return '<b>'+fdate(p[0])+'</b> · '+esc(fname(p[1]))}).join(' &nbsp;|&nbsp; ')+(prog.length>6?' …':'')+'</p>';
+ if(trash)al+='<p class="msg">🗑 En la papelera hay <b>'+trash+'</b> archivo(s). No se ven en la página.</p>';
+ $('sum').innerHTML='<div class="kpi2"><div><b>'+tot+'</b><span>fotos y videos publicados</span></div><div><b>'+nuevos+'</b><span>con etiqueta NUEVO</span></div><div><b>'+prog.length+'</b><span>programados</span></div></div>'+al+'<p class="s" style="margin-top:12px">Toque una sección para abrirla:</p><div class="scs">'+cards+'</div>';
+ $('sum').querySelectorAll('.sc').forEach(function(b){b.onclick=function(){goTab('media');setFolder(b.dataset.f)}});
+ buildPills();
+}catch(e){$('sum').innerHTML='<p class="msg e">No se pudo cargar el resumen: '+esc(e.message)+'</p>'}finally{SUMBUSY=false}}
+
 </script></body></html>
