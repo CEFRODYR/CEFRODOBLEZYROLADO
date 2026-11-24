@@ -72,6 +72,23 @@ h1,h2,.card>h2,header b{font-family:"Barlow Condensed",sans-serif;letter-spacing
 #home details{border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin-bottom:8px}#home summary{cursor:pointer;font-weight:600}
 @media(max-width:600px){.kpi2 b{font-size:26px}.qa{grid-template-columns:1fr 1fr}.qa b{font-size:16px}.qa span{display:none}}
 
+.frm{background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:6px 14px 4px}
+.frm label,#faq label,#horCard label{display:block;font-weight:600;font-size:14px;margin:10px 0 4px}
+.frm input,.frm select,.frm textarea,#faq select,#horCard input{width:100%}
+label.ck{display:flex!important;gap:8px;align-items:center;font-weight:600}label.ck input{width:auto!important}
+.fqi{border:1px solid var(--bd);border-radius:12px;padding:10px 12px;margin:10px 0;background:var(--bg);display:grid;gap:6px}
+.fqh{display:flex;justify-content:space-between;align-items:center}.fqh button{padding:4px 9px;margin-left:4px}
+.row,.hrow{display:flex;gap:12px;align-items:center;border:1px solid var(--bd);border-radius:12px;padding:8px 10px;margin:8px 0;background:var(--card)}
+.row img{width:74px;height:56px;object-fit:cover;border-radius:8px;flex:none}.row .noimg{width:74px;height:56px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--mu);flex:none}
+.row>div,.hrow>div{flex:1;min-width:0}.row b,.hrow b{display:block}.row small,.hrow small{display:block;color:var(--mu);font-size:13px;overflow-wrap:anywhere}
+.rb{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}.rb button{padding:5px 9px}
+.stars{color:#f59e0b;font-size:16px;letter-spacing:1px;flex:none}
+.pv{max-width:160px;border-radius:8px;margin-top:6px}
+.hf ul{margin:6px 0 0;padding-left:18px;font-size:13px}
+button.x{color:var(--err)}
+#fq_go.pulse{box-shadow:0 0 0 3px rgba(217,119,6,.35)}
+@media(max-width:600px){.row,.hrow{flex-wrap:wrap}.rb{width:100%;justify-content:flex-start}}
+
 </style></head><body>
 <header><h1>🛠️ Panel de administración · CEFRO Doblez y Rolado</h1><span><a href="index.html" target="_blank">Ver página ↗</a> &nbsp; <button class="g" id="out" style="color:#fff;padding:6px 12px">Salir</button></span></header>
 <main>
@@ -87,8 +104,11 @@ h1,h2,.card>h2,header b{font-family:"Barlow Condensed",sans-serif;letter-spacing
 <button class="on" data-t="home">🏠 Inicio</button>
 <button data-t="media">📷 Fotos y videos</button>
 <button data-t="text">✏️ Editar páginas</button>
-<button data-t="data">📞 Datos de contacto</button>
+<button data-t="faq">❓ Preguntas</button>
+<button data-t="cas">⭐ Casos y opiniones</button>
+<button data-t="data">📞 Datos y horario</button>
 <button data-t="vis">📊 Visitas</button>
+<button data-t="his">🕘 Historial</button>
 </div>
 
 <!-- INICIO -->
@@ -101,6 +121,11 @@ h1,h2,.card>h2,header b{font-family:"Barlow Condensed",sans-serif;letter-spacing
 <button data-go="aviso"><i>📢</i><b>Poner un aviso</b><span>Feriado, vacaciones o promoción</span></button>
 <button data-go="data"><i>📞</i><b>Cambiar teléfono o datos</b><span>En todas las páginas a la vez</span></button>
 <button data-go="vis"><i>📊</i><b>Ver mis visitas</b><span>Cuántas personas entraron</span></button>
+<button data-go="hor"><i>🕒</i><b>Cambiar el horario</b><span>En toda la página y en «Abierto ahora»</span></button>
+<button data-go="faq"><i>❓</i><b>Editar preguntas</b><span>Las preguntas frecuentes de cada página</span></button>
+<button data-go="cas"><i>🏗</i><b>Agregar un caso u opinión</b><span>Trabajos reales y lo que dicen sus clientes</span></button>
+<button data-go="cot"><i>📨</i><b>Ver cotizaciones</b><span>Las que llegan desde la web</span></button>
+<button data-go="his"><i>🕘</i><b>Historial y deshacer</b><span>Volver atrás un cambio</span></button>
 <button data-go="trash"><i>🗑</i><b>Papelera</b><span>Recuperar algo borrado</span></button>
 <a href="index.html" target="_blank"><i>🌐</i><b>Ver mi página</b><span>cefrodr.com ↗</span></a>
 </div></div>
@@ -113,6 +138,11 @@ h1,h2,.card>h2,header b{font-family:"Barlow Condensed",sans-serif;letter-spacing
 <div class="two"><div><label>Mostrar desde <small>(vacío = desde hoy)</small></label><input type="date" id="av_d"></div><div><label>Quitar después de <small>(vacío = no se quita solo)</small></label><input type="date" id="av_h"></div></div>
 <label>Vista previa</label><div id="avprev"></div>
 <p><button id="av_go">💾 Publicar aviso</button> <button class="g" id="av_off">Quitar aviso</button></p><div id="avm"></div></div>
+<div class="card"><h2>📨 Cotizaciones de la web</h2>
+<p class="s">Cuando alguien llena el formulario «Cotiza por WhatsApp» de su página, además de abrir WhatsApp se envía una <b>copia a su correo</b> cefrodoblezyrolado@gmail.com. Así no se pierde ninguna, aunque el cliente no termine de enviar el WhatsApp.</p>
+<p><a class="btn" href="https://mail.google.com/mail/u/?authuser=cefrodoblezyrolado@gmail.com#search/subject%3A%22Nueva+cotizaci%C3%B3n+desde+la+web%22" target="_blank">📬 Ver cotizaciones en Gmail ↗</a></p>
+<details><summary>⚠️ Importante: activar la primera vez</summary><p>La primera vez que alguien envíe el formulario, le llegará a cefrodoblezyrolado@gmail.com un correo de <b>FormSubmit</b> que dice «Action Required: Activate Form». Ábralo y pulse <b>«Activate Form»</b>. Desde ese momento le llegan todas las cotizaciones. Si no lo ve, revise la carpeta Spam o Promociones. Puede hacer usted mismo una cotización de prueba desde su página para activarlo.</p></details></div>
+
 <div class="card" id="sumCard"><h2>📋 Resumen de su página</h2><div id="sum"><p class="s">Cargando…</p></div></div>
 <div class="card"><h2>❓ Ayuda rápida</h2>
 <details><summary>¿Cómo subo fotos de un trabajo nuevo?</summary><p>Toque «Subir fotos o videos», elija la sección (por ejemplo «Techos parabólicos») y arrastre las fotos o pulse el recuadro para elegirlas. Escriba un pie de foto y pulse «Guardar cambios».</p></details>
@@ -141,7 +171,46 @@ h1,h2,.card>h2,header b{font-family:"Barlow Condensed",sans-serif;letter-spacing
 <div class="savebar hide" id="msave"><span>● Tiene cambios sin guardar en el orden o los pies de foto</span><button class="g" id="mundo">Descartar</button><button id="mgo">💾 Guardar cambios</button></div>
 </div>
 
-<!-- VISITAS -->
+<!-- PREGUNTAS -->
+<div id="faq" class="hide"><div class="card"><h2>❓ Preguntas frecuentes</h2>
+<p class="s">Edite las preguntas que aparecen al final de cada página. Google también las puede mostrar en sus resultados.</p>
+<label>Página</label><select id="fq_page"></select>
+<div id="fq_list"><p class="s">Cargando…</p></div>
+<p><button class="g" id="fq_add">➕ Agregar pregunta</button></p>
+<p><button id="fq_go">💾 Guardar preguntas de esta página</button></p><div id="fqm"></div>
+<p class="tip">Si una respuesta tenía enlaces y usted cambia su texto, el enlace se quita (queda solo el texto).</p></div></div>
+
+<!-- CASOS Y OPINIONES -->
+<div id="cas" class="hide">
+<div class="card"><h2>🏗 Casos de trabajo</h2>
+<p class="s">Cuente un trabajo real: qué hicieron, dónde, con qué medidas y en cuánto tiempo. Aparecen en el inicio (los 3 últimos) y en «Nuestras obras». A Google le encanta este contenido.</p>
+<div class="frm" id="cs_form">
+<label>Título del trabajo *</label><input id="cs_t" maxlength="90" placeholder="Ej: Techo parabólico para cochera">
+<div class="two"><div><label>Servicio</label><select id="cs_s"></select></div><div><label>Distrito</label><input id="cs_d" maxlength="40" placeholder="Ej: Los Olivos"></div></div>
+<div class="two"><div><label>Medidas</label><input id="cs_m" maxlength="60" placeholder="Ej: luz 6 m, flecha 1.2 m"></div><div><label>Material</label><input id="cs_ma" maxlength="60" placeholder="Ej: tubo rectangular 2x1"></div></div>
+<div class="two"><div><label>Cantidad</label><input id="cs_c" maxlength="30" placeholder="Ej: 12 arcos"></div><div><label>Tiempo de entrega</label><input id="cs_e" maxlength="30" placeholder="Ej: 2 días"></div></div>
+<label>Cuéntelo en pocas palabras</label><textarea id="cs_x" rows="3" maxlength="400" placeholder="Ej: El cliente necesitaba cubrir su cochera. Rolamos 12 arcos iguales…"></textarea>
+<div class="two"><div><label>Fecha del trabajo</label><input type="month" id="cs_f"></div><div><label>Foto</label><input type="file" id="cs_i" accept="image/*"><div id="cs_ip"></div></div></div>
+<p><button id="cs_add">➕ Agregar caso</button> <button class="g hide" id="cs_cancel">Cancelar edición</button></p></div>
+<div id="cs_list"></div></div>
+<div class="card"><h2>⭐ Opiniones de clientes</h2>
+<p class="s">Copie aquí lo que le dijeron sus clientes (por WhatsApp, en persona…). Se muestran en el inicio. <b>Solo publique opiniones reales y con permiso del cliente.</b></p>
+<div class="frm">
+<div class="two"><div><label>Nombre del cliente *</label><input id="op_n" maxlength="40" placeholder="Ej: Carlos M."></div><div><label>Distrito</label><input id="op_d" maxlength="40" placeholder="Ej: Comas"></div></div>
+<div class="two"><div><label>Servicio</label><input id="op_s" maxlength="50" placeholder="Ej: Arcos para techo"></div><div><label>Estrellas</label><select id="op_e"><option value="5">★★★★★ (5)</option><option value="4">★★★★ (4)</option><option value="3">★★★ (3)</option></select></div></div>
+<label>Opinión *</label><textarea id="op_t" rows="3" maxlength="300" placeholder="Ej: Muy buen trabajo, los arcos quedaron perfectos y a tiempo."></textarea>
+<label class="ck"><input type="checkbox" id="op_ok"> El cliente me dio permiso para publicar su opinión</label>
+<p><button id="op_add">➕ Agregar opinión</button></p></div>
+<div id="op_list"></div></div>
+<div class="savebar hide" id="csave"><span>● Cambios sin guardar en casos u opiniones</span><button class="g" id="cundo">Descartar</button><button id="cgo">💾 Guardar cambios</button></div>
+<div id="cm"></div>
+</div>
+
+<!-- HISTORIAL -->
+<div id="his" class="hide"><div class="card"><h2>🕘 Historial de cambios</h2>
+<p class="s">Los últimos cambios de su página (hechos desde este panel o por Claude). Si algo salió mal, pulse <b>«↶ Deshacer»</b> y esos archivos vuelven a como estaban antes de ese cambio.</p>
+<p><button class="g" id="hs_r">🔄 Actualizar lista</button></p><div id="hsm"></div><div id="hs"></div></div></div>
+
 <!-- VISITAS -->
 <div id="vis" class="hide">
 <div id="vsetup" class="card hide">
@@ -207,12 +276,21 @@ h1,h2,.card>h2,header b{font-family:"Barlow Condensed",sans-serif;letter-spacing
 <div class="two"><div><label>Texto actual</label><input id="t_old" placeholder="Taladros 200"></div><div><label>Texto nuevo</label><input id="t_new" placeholder="Nueva dirección"></div></div>
 <p><button id="t_go">Reemplazar en toda la página</button></p><div id="tmm"></div>
 </div>
+<div class="card" id="horCard"><h2>🕒 Horario de atención</h2>
+<p class="s">Cambia el horario en <b>todas las páginas</b> a la vez: textos, preguntas frecuentes, el aviso «Abierto ahora / Cerrado» y los datos que lee Google.</p>
+<div class="two"><div><label>Lunes a viernes: abre</label><input type="time" id="h_a"></div><div><label>Lunes a viernes: cierra</label><input type="time" id="h_c"></div></div>
+<label class="ck"><input type="checkbox" id="h_s"> Atendemos los sábados</label>
+<div class="two" id="h_srow"><div><label>Sábado: abre</label><input type="time" id="h_sa"></div><div><label>Sábado: cierra</label><input type="time" id="h_sc"></div></div>
+<p class="msg w" id="h_prev"></p>
+<p><button id="h_go">💾 Cambiar horario en toda la página</button></p><div id="hm"></div>
+<p class="tip">Recuerde cambiarlo también en su perfil de Google Maps para que coincida.</p></div>
+
 </div>
 </div>
 </main>
 
 <script>
-var REPO='CEFRODYR/cefrodoblezyrolado',BR='main',API='https://api.github.com/repos/'+REPO+'/contents/';
+var REPO='CEFRODYR/CEFRODOBLEZYROLADO',BR='main',API='https://api.github.com/repos/'+REPO+'/contents/';
 var NAMES={'index.html':'Inicio','techo-parabolico.html':'Techos parabólicos','techos-parabolicos-coberturas-coliseos.html':'Coberturas y coliseos','rolado-de-tubo.html':'Rolado de tubo','rolado-de-tubo-rectangular.html':'Rolado de tubo rectangular','rolado-de-angulo-platina-canaleta.html':'Ángulo, platina y canaletas','tubos-schedule.html':'Tubos schedule','doblez-de-tubo.html':'Doblez de tubo','barandas-y-pasamanos.html':'Barandas y pasamanos','soldadura.html':'Soldadura','obras.html':'Nuestras obras','doblez-y-rolado-lima-norte.html':'Lima Norte','guias.html':'Guías','calculadora-techo-parabolico.html':'Guía: calculadora','que-tubo-usar-techo-parabolico.html':'Guía: qué tubo usar','diferencia-rolado-y-doblez-de-tubos.html':'Guía: rolado vs. doblez'};
 var PAGES=Object.keys(NAMES).map(function(k){return[k,NAMES[k]]});
 var FOLDERS=[['afiches','Afiches (inicio, primero)'],['reels','Videos reels (inicio)'],['techos-parabolicos','Techos parabólicos'],['rolado','Rolado de tubo'],['doblez','Doblez de tubo'],['soldadura','Soldadura'],['obras','Nuestras obras'],['maquinaria','Maquinaria (inicio)'],['videos','Videos (inicio)'],['_papelera','🗑 Papelera'],['banners','Banners · todo el año'],['banners-enero','Banners · Enero'],['banners-febrero','Banners · Febrero'],['banners-marzo','Banners · Marzo'],['banners-abril','Banners · Abril'],['banners-mayo','Banners · Mayo'],['banners-junio','Banners · Junio'],['banners-julio','Banners · Julio'],['banners-agosto','Banners · Agosto'],['banners-septiembre','Banners · Septiembre'],['banners-octubre','Banners · Octubre'],['banners-noviembre','Banners · Noviembre'],['banners-diciembre','Banners · Diciembre']];
@@ -232,22 +310,24 @@ var known=PAGES.map(function(p){return p[0]});
 (root||[]).forEach(function(f){if(f.type=='file'&&/\.html$/.test(f.name)&&f.name!='admin.html'&&known.indexOf(f.name)<0){PAGES.push([f.name,f.name.replace(/\.html$/,'').replace(/-/g,' ').replace(/^./,function(c){return c.toUpperCase()})]);known.push(f.name)}});
 PAGES=PAGES.filter(function(p){return (root||[]).some(function(f){return f.name==p[0]})});
 $('login').classList.add('hide');$('app').classList.remove('hide');
-$('page').innerHTML=PAGES.map(function(p){return '<option value="'+p[0]+'">'+esc(p[1])+'</option>'}).join('');
-buildPills();loadDesc().then(function(){loadList();fillAviso();loadSummary()});loadPage()}).catch(function(e){$('login').classList.remove('hide');msg('lm','No se pudo entrar: '+esc(e.message)+'. Revise el token y sus permisos.','e')})}
+$('page').innerHTML=PAGES.map(function(p){return '<option value="'+p[0]+'">'+esc(p[1])+'</option>'}).join('');$('fq_page').innerHTML=$('page').innerHTML;
+buildPills();loadDesc().then(function(){loadList();fillAviso();fillHor();loadSummary()});loadPage()}).catch(function(e){$('login').classList.remove('hide');msg('lm','No se pudo entrar: '+esc(e.message)+'. Revise el token y sus permisos.','e')})}
 $('in').onclick=function(){TK=$('tok').value.trim();try{localStorage.setItem('cefro_tk',TK)}catch(e){}start()};
 $('tok').onkeydown=function(e){if(e.key=='Enter')$('in').click()};
 $('out').onclick=function(){if(anyDirty()&&!confirm('Tiene cambios sin guardar. ¿Salir igual?'))return;try{localStorage.removeItem('cefro_tk')}catch(e){}location.reload()};
 if(TK)start();
-function anyDirty(){return DIRTY||MDIRTY}
+function anyDirty(){return DIRTY||MDIRTY||(typeof FQ!='undefined'&&FQ.dirty)||(typeof CON!='undefined'&&CON.dirty)}
 var TAB='home';
 function goTab(t){var b=document.querySelector('.tabs button[data-t="'+t+'"]');if(b)b.click();window.scrollTo({top:0,behavior:'smooth'})}
 document.querySelectorAll('.tabs button').forEach(function(b){b.onclick=function(){
 if(b.dataset.t==TAB)return;
 if(TAB=='text'&&DIRTY&&!confirm('Tiene cambios sin guardar en el editor. ¿Salir sin guardar?'))return;
 if(TAB=='media'&&MDIRTY&&!confirm('Tiene cambios sin guardar en las fotos. ¿Salir sin guardar?'))return;
+if(TAB=='faq'&&FQ.dirty&&!confirm('Tiene preguntas sin guardar. ¿Salir sin guardar?'))return;if(TAB=='faq'&&FQ.dirty){FQ.dirty=false;FQ.page=''}
+if(TAB=='cas'&&CON.dirty&&!confirm('Tiene casos u opiniones sin guardar. ¿Salir sin guardar?'))return;if(TAB=='cas'&&CON.dirty)conLoad();
 if(TAB=='text'&&DIRTY)loadPage();if(TAB=='media'&&MDIRTY)loadDesc().then(loadList);
 TAB=b.dataset.t;
-document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on',x===b)});['home','media','text','data','vis'].forEach(function(t){$(t).classList.toggle('hide',b.dataset.t!=t)});if(b.dataset.t=='vis')visOpen();if(b.dataset.t=='home')loadSummary()}});
+document.querySelectorAll('.tabs button').forEach(function(x){x.classList.toggle('on',x===b)});['home','media','text','faq','cas','data','vis','his'].forEach(function(t){$(t).classList.toggle('hide',b.dataset.t!=t)});if(b.dataset.t=='vis')visOpen();if(b.dataset.t=='home')loadSummary();if(b.dataset.t=='faq'&&!FQ.page)fqLoad().catch(function(e){msg('fqm','Error: '+esc(e.message),'e')});if(b.dataset.t=='cas'&&!CON.loaded){CON.loaded=1;conLoad().catch(function(e){msg('cm','Error: '+esc(e.message),'e')})}if(b.dataset.t=='his')loadHist()}});
 window.onbeforeunload=function(){if(anyDirty())return 'Tiene cambios sin guardar'};
 
 /* ---------- visitas (GoatCounter) ---------- */
@@ -311,9 +391,9 @@ $('gout').onclick=function(){try{localStorage.removeItem('cefro_gc')}catch(e){}G
 /* ---------- fotos y videos ---------- */
 var IMG=/\.(jpe?g|png|webp|gif|avif)$/i,VID=/\.(mp4|webm|mov)$/i;
 var DESC={},ORDER={},META={},POST={},AVISO={},DSHA='',DTXT='',ITEMS=[],MDIRTY=false,COUNTS={};
-function loadDesc(){return gh('descripciones.js?ref='+BR+'&t='+Date.now()).then(function(j){DSHA=j.sha;DTXT=dec(j.content);var w={};try{new Function('window',DTXT)(w)}catch(e){}DESC=w.CEFRO_DESC||{};ORDER=w.CEFRO_ORDER||{};META=w.CEFRO_META||{};AVISO=w.CEFRO_AVISO||{}}).catch(function(e){if(!/^404/.test(e.message))throw e;DSHA='';DESC={};ORDER={};META={};AVISO={}})}
+function loadDesc(){return gh('descripciones.js?ref='+BR+'&t='+Date.now()).then(function(j){DSHA=j.sha;DTXT=dec(j.content);var w={};try{new Function('window',DTXT)(w)}catch(e){}DESC=w.CEFRO_DESC||{};ORDER=w.CEFRO_ORDER||{};META=w.CEFRO_META||{};AVISO=w.CEFRO_AVISO||{};HOR=w.CEFRO_HORARIO||{}}).catch(function(e){if(!/^404/.test(e.message))throw e;DSHA='';DESC={};ORDER={};META={};AVISO={};HOR={}})}
 function objLines(o,fn){var ks=Object.keys(o).sort();return '{\n'+ks.map(function(k){return JSON.stringify(k)+':'+fn(o[k])}).join(',\n')+'\n}'}
-function descText(){return '// Descripciones (pie de foto) y orden de las fotos y videos de las galerías.\n// Clave: carpeta/archivo. Este archivo lo actualiza el panel de administración (admin.html).\nwindow.CEFRO_DESC='+objLines(DESC,JSON.stringify)+';\nwindow.CEFRO_ORDER='+objLines(ORDER,function(a){return JSON.stringify(a)})+';\n// Fechas: u=subido, d=publicar desde, h=ocultar después de (AAAA-MM-DD)\nwindow.CEFRO_META='+objLines(META,JSON.stringify)+';\n// Aviso en la parte de arriba de la web (lo maneja el panel)\nwindow.CEFRO_AVISO='+JSON.stringify(AVISO)+';\n'}
+function descText(){return '// Descripciones (pie de foto) y orden de las fotos y videos de las galerías.\n// Clave: carpeta/archivo. Este archivo lo actualiza el panel de administración (admin.html).\nwindow.CEFRO_DESC='+objLines(DESC,JSON.stringify)+';\nwindow.CEFRO_ORDER='+objLines(ORDER,function(a){return JSON.stringify(a)})+';\n// Fechas: u=subido, d=publicar desde, h=ocultar después de (AAAA-MM-DD)\nwindow.CEFRO_META='+objLines(META,JSON.stringify)+';\n// Aviso en la parte de arriba de la web (lo maneja el panel)\nwindow.CEFRO_AVISO='+JSON.stringify(AVISO)+';\n// Horario de atención (lo usa el aviso «Abierto ahora»)\nwindow.CEFRO_HORARIO='+JSON.stringify(HOR&&HOR.a?HOR:{})+';\n'}
 function saveDesc(why){var body={message:why||'Actualiza orden y descripciones de fotos',content:enc(descText()),branch:BR};if(DSHA)body.sha=DSHA;
 return gh('descripciones.js',{method:'PUT',body:JSON.stringify(body)}).then(function(j){DSHA=j.content.sha;setTimeout(function(){regenSitemap().catch(function(e){console.warn('sitemap',e)})},300)})}
 function setM(v){MDIRTY=v;$('msave').classList.toggle('hide',!v)}
@@ -620,6 +700,8 @@ function trashCard(x){var p=trashFrom(x.name),ok=p[0]&&FOLDERS.some(function(f){
 document.querySelectorAll('.qa button').forEach(function(b){b.onclick=function(){var g=b.dataset.go;
  if(g=='banners'){goTab('media');setFolder('banners');return}
  if(g=='trash'){goTab('media');setFolder('_papelera');return}
+ if(g=='hor'){goCard('data','horCard');return}
+ if(g=='cot'){window.open('https://mail.google.com/mail/u/?authuser=cefrodoblezyrolado@gmail.com#search/subject%3A%22Nueva+cotizaci%C3%B3n+desde+la+web%22','_blank');return}
  if(g=='aviso'){$('avisoCard').scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){$('av_t').focus()},400);return}
  goTab(g)}});
 var AVL={wa:'https://wa.me/51992550533',contacto:'index.html#contacto',calc:'calculadora-techo-parabolico.html'};
@@ -650,5 +732,136 @@ async function loadSummary(){if(SUMBUSY||!$('sum'))return;SUMBUSY=true;try{
  $('sum').querySelectorAll('.sc').forEach(function(b){b.onclick=function(){goTab('media');setFolder(b.dataset.f)}});
  buildPills();
 }catch(e){$('sum').innerHTML='<p class="msg e">No se pudo cargar el resumen: '+esc(e.message)+'</p>'}finally{SUMBUSY=false}}
+
+
+/* ===================== utilidades de archivos ===================== */
+async function getFile(p){try{var j=await gh(p+'?ref='+BR+'&t='+Date.now());return{sha:j.sha,text:dec(j.content)}}catch(e){if(/^404/.test(e.message))return{sha:'',text:''};throw e}}
+async function putText(p,text,why,sha){var b={message:why,content:enc(text),branch:BR};if(sha)b.sha=sha;var j=await gh(p,{method:'PUT',body:JSON.stringify(b)});return j.content.sha}
+function escT(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function plain(h){var d=document.createElement('div');d.innerHTML=h;return (d.textContent||'').replace(/\s+/g,' ').trim()}
+function goCard(t,id){goTab(t);setTimeout(function(){var e=$(id);if(e)e.scrollIntoView({behavior:'smooth',block:'start'})},250)}
+
+/* ===================== HORARIO ===================== */
+var HOR={},HOR0={a:'08:00',c:'17:00',s:true,sa:'08:00',sc:'16:00'};
+function horCur(){var h=HOR&&HOR.a?HOR:HOR0;return{a:h.a,c:h.c,s:h.s!==false,sa:h.sa||'08:00',sc:h.sc||'16:00'}}
+function A12(t){var p=t.split(':'),h=+p[0];return((h%12)||12)+':'+p[1]+(h<12?' a. m.':' p. m.')}
+function S12(t){var p=t.split(':'),h=+p[0];return((h%12)||12)+':'+p[1]}
+function horPairs(o,n){var P=[];function add(f){var a=f(o),b=f(n);if(a!==b)P.push([a,b])}
+ add(function(h){return 'de lunes a viernes de '+A12(h.a)+' a '+A12(h.c)+(h.s?' y los sábados de '+A12(h.sa)+' a '+A12(h.sc):'')});
+ add(function(h){return 'De lunes a viernes de '+A12(h.a)+' a '+A12(h.c)+(h.s?' y los sábados de '+A12(h.sa)+' a '+A12(h.sc):'')});
+ add(function(h){return 'Lun–Vie '+S12(h.a)+'–'+S12(h.c)+', '+(h.s?'Sáb '+S12(h.sa)+'–'+S12(h.sc):'Sáb cerrado')});
+ add(function(h){return '<th>Lunes a viernes</th><td>'+A12(h.a)+' – '+A12(h.c)+'</td>'});
+ add(function(h){return '<th>Sábados</th><td>'+(h.s?A12(h.sa)+' – '+A12(h.sc):'Cerrado')+'</td>'});
+ add(function(h){return '"Friday"], "opens": "'+h.a+'", "closes": "'+h.c+'"'});
+ add(function(h){return '"dayOfWeek": "Saturday", "opens": "'+(h.s?h.sa:'00:00')+'", "closes": "'+(h.s?h.sc:'00:00')+'"'});
+ add(function(h){return 'Atención desde las '+A12(h.a)});
+ add(function(h){return (h.s?'Lun a sáb':'Lun a vie')+' desde las '+A12(h.a)});
+ add(function(h){return '<b>'+(h.s?'Lun–Sáb':'Lun–Vie')+'</b><span>Atención'});
+ return P}
+function horRead(){return{a:$('h_a').value||'08:00',c:$('h_c').value||'17:00',s:$('h_s').checked,sa:$('h_sa').value||'08:00',sc:$('h_sc').value||'16:00'}}
+function horPrev(){var h=horRead();$('h_srow').classList.toggle('hide',!h.s);$('h_prev').innerHTML='Así se verá: <b>Lunes a viernes de '+A12(h.a)+' a '+A12(h.c)+(h.s?' y sábados de '+A12(h.sa)+' a '+A12(h.sc):' · sábados cerrado')+'</b> · Domingos cerrado'}
+function fillHor(){var h=horCur();$('h_a').value=h.a;$('h_c').value=h.c;$('h_s').checked=h.s;$('h_sa').value=h.sa;$('h_sc').value=h.sc;horPrev()}
+['h_a','h_c','h_s','h_sa','h_sc'].forEach(function(i){$(i).addEventListener('input',horPrev);$(i).addEventListener('change',horPrev)});
+$('h_go').onclick=async function(){var o=horCur(),n=horRead();
+ if(n.c<=n.a||(n.s&&n.sc<=n.sa)){msg('hm','La hora de cierre debe ser después de la de apertura.','e');return}
+ var P=horPairs(o,n);if(!P.length){msg('hm','Es el mismo horario que ya tiene.','w');return}
+ if(!confirm('¿Cambiar el horario en toda la página?\n\nLunes a viernes: '+A12(n.a)+' a '+A12(n.c)+'\nSábados: '+(n.s?A12(n.sa)+' a '+A12(n.sc):'cerrado')))return;
+ if(MDIRTY&&!confirm('Tiene cambios sin guardar en «Fotos y videos»; se guardarán también. ¿Seguir?'))return;
+ $('h_go').disabled=true;await replaceAll(P,'hm');
+ var old=HOR;HOR=n;try{await saveDesc('Cambia el horario de atención');setM(false);msg('hm','✅ Horario cambiado en toda la página y en el aviso «Abierto ahora». Se verá en 1 a 3 minutos. Recuerde cambiarlo también en Google Maps.')}catch(e){HOR=old;msg('hm','Se cambiaron los textos, pero no se pudo guardar el horario del aviso: '+esc(e.message),'e')}
+ $('h_go').disabled=false};
+
+/* ===================== PREGUNTAS FRECUENTES ===================== */
+var FQ={page:'',sha:'',text:'',items:[],dirty:false};
+function fqParse(t){var i=t.indexOf('<section class="faq"');if(i<0)return[];var sec=t.slice(i,t.indexOf('</section>',i)),out=[];
+ sec.replace(/<details>\s*<summary>([\s\S]*?)<\/summary>\s*<p>([\s\S]*?)<\/p>\s*<\/details>/g,function(_,q,a){out.push({q:plain(q),a:plain(a),ah:a,ao:plain(a)})});return out}
+function fqRender(){if(!FQ.items.length){$('fq_list').innerHTML='<p class="msg w">Esta página no tiene preguntas. Pulse «➕ Agregar pregunta».</p>';return}
+ $('fq_list').innerHTML=FQ.items.map(function(it,i){return '<div class="fqi" data-i="'+i+'"><div class="fqh"><b>Pregunta '+(i+1)+'</b><span><button class="g" data-a="up" title="Subir">▲</button><button class="g" data-a="dn" title="Bajar">▼</button><button class="g x" data-a="rm" title="Quitar">🗑</button></span></div><input data-f="q" maxlength="160" value="'+escT(it.q)+'" placeholder="Escriba la pregunta"><textarea data-f="a" rows="3" maxlength="700" placeholder="Escriba la respuesta">'+escT(it.a)+'</textarea></div>'}).join('')}
+function fqDirty(v){FQ.dirty=v;$('fq_go').classList.toggle('pulse',v)}
+async function fqLoad(){var p=$('fq_page').value;if(FQ.dirty&&FQ.page&&p!=FQ.page&&!confirm('Tiene preguntas sin guardar. ¿Cambiar de página sin guardar?')){$('fq_page').value=FQ.page;return}
+ FQ.page=p;$('fq_list').innerHTML='<p class="s">Cargando…</p>';var f=await getFile(p);FQ.sha=f.sha;FQ.text=f.text;FQ.items=fqParse(f.text);fqDirty(false);fqRender()}
+$('fq_list').addEventListener('input',function(e){var d=e.target.closest('.fqi');if(!d)return;FQ.items[+d.dataset.i][e.target.dataset.f]=e.target.value;fqDirty(true)});
+$('fq_list').addEventListener('click',function(e){var b=e.target.closest('button[data-a]');if(!b)return;var i=+b.closest('.fqi').dataset.i,L=FQ.items;
+ if(b.dataset.a=='up'&&i>0){L.splice(i-1,0,L.splice(i,1)[0])}if(b.dataset.a=='dn'&&i<L.length-1){L.splice(i+1,0,L.splice(i,1)[0])}if(b.dataset.a=='rm'){if(!confirm('¿Quitar esta pregunta?'))return;L.splice(i,1)}fqDirty(true);fqRender()});
+$('fq_add').onclick=function(){FQ.items.push({q:'',a:''});fqDirty(true);fqRender();var l=$('fq_list').querySelectorAll('.fqi input');if(l.length)l[l.length-1].focus()};
+$('fq_page').onchange=function(){fqLoad().catch(function(e){msg('fqm','Error: '+esc(e.message),'e')})};
+function fqApply(t,items){
+ var html=items.map(function(it){return '<details><summary>'+escT(it.q)+'</summary><p>'+(it.ah&&it.a===it.ao?it.ah:escT(it.a))+'</p></details>'}).join('');
+ var i=t.indexOf('<section class="faq"');
+ if(i>=0){var j=t.indexOf('</section>',i)+10,sec=t.slice(i,j);
+  if(!items.length)t=t.slice(0,i)+t.slice(j);
+  else{var a=sec.indexOf('<details'),b=sec.lastIndexOf('</details>')+10;sec=a>=0?sec.slice(0,a)+html+sec.slice(b):sec.replace('</div></section>',html+'</div></section>');t=t.slice(0,i)+sec+t.slice(j)}}
+ else if(items.length){var ns='<section class="faq"><div class="wrap"><h2>Preguntas frecuentes</h2>'+html+'</div></section>',k=t.indexOf('<section class="alt"><div class="wrap"><div class="head"><h2>Otros servicios');if(k<0)k=t.lastIndexOf('</main>');t=t.slice(0,k)+ns+t.slice(k)}
+ var ld=items.length?'<script type="application/ld+json">'+JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":items.map(function(it){return{"@type":"Question","name":it.q,"acceptedAnswer":{"@type":"Answer","text":it.a}}})})+'<\/script>':'';
+ var re=/<script type="application\/ld\+json">((?:(?!<\/script>)[\s\S])*?"FAQPage"[\s\S]*?)<\/script>\s*/;
+ if(re.test(t))t=t.replace(re,function(){return ld?ld+'\n':''});else if(ld)t=t.replace('</head>',ld+'\n</head>');
+ return t}
+$('fq_go').onclick=async function(){var items=FQ.items.map(function(it){return{q:(it.q||'').replace(/\s+/g,' ').trim(),a:(it.a||'').replace(/\s+/g,' ').trim(),ah:it.ah,ao:it.ao}}).filter(function(it){return it.q||it.a});
+ if(items.some(function(it){return !it.q||!it.a})){msg('fqm','Cada pregunta necesita su respuesta (y al revés).','e');return}
+ $('fq_go').disabled=true;msg('fqm','⏳ Guardando…','w');
+ try{var f=await getFile(FQ.page);var t=fqApply(f.text,items);if(t===f.text){msg('fqm','No hay cambios.','w')}else{FQ.sha=await putText(FQ.page,t,'Edita preguntas frecuentes de '+FQ.page,f.sha);FQ.text=t;FQ.items=fqParse(t);fqDirty(false);fqRender();msg('fqm','✅ Preguntas guardadas. Se verán en 1 a 3 minutos.');if(CUR==FQ.page&&!DIRTY)loadPage()}}
+ catch(e){msg('fqm','No se pudo guardar: '+esc(e.message),'e')}$('fq_go').disabled=false};
+
+/* ===================== CASOS Y OPINIONES ===================== */
+var CON={sha:'',casos:[],opis:[],dirty:false,edit:-1,pend:{}};
+var SERV=[['techo-parabolico.html','Techos parabólicos'],['techos-parabolicos-coberturas-coliseos.html','Coberturas y coliseos'],['rolado-de-tubo.html','Rolado de tubos'],['rolado-de-tubo-rectangular.html','Tubo rectangular'],['tubos-schedule.html','Tubos schedule'],['rolado-de-angulo-platina-canaleta.html','Ángulo, platina y canaletas'],['doblez-de-tubo.html','Doblez de tubos'],['barandas-y-pasamanos.html','Barandas y pasamanos'],['soldadura.html','Soldadura']];
+$('cs_s').innerHTML=SERV.map(function(s){return '<option value="'+s[0]+'">'+s[1]+'</option>'}).join('');
+function conText(){return '// Casos de trabajo y opiniones de clientes. Este archivo lo actualiza el panel de administración (admin.html).\nwindow.CEFRO_CASOS='+JSON.stringify(CON.casos,null,1)+';\nwindow.CEFRO_OPINIONES='+JSON.stringify(CON.opis,null,1)+';\n'}
+async function conLoad(){var f=await getFile('contenido.js');CON.sha=f.sha;var w={};try{new Function('window',f.text)(w)}catch(e){}CON.casos=w.CEFRO_CASOS||[];CON.opis=w.CEFRO_OPINIONES||[];CON.pend={};conDirty(false);csRender();opRender()}
+function conDirty(v){CON.dirty=v;$('csave').classList.toggle('hide',!v)}
+function sname(u){var s=SERV.filter(function(x){return x[0]==u})[0];return s?s[1]:''}
+function csImg(c){return CON.pend[c.img]?CON.pend[c.img].url:(c.img?c.img+'?t=1':'')}
+function csRender(){$('cs_list').innerHTML=CON.casos.length?'<h3 style="margin:14px 0 8px">Casos publicados ('+CON.casos.length+')</h3>'+CON.casos.map(function(c,i){return '<div class="row" data-i="'+i+'">'+(c.img?'<img src="'+csImg(c)+'" alt="">':'<span class="noimg">Sin foto</span>')+'<div><b>'+escT(c.t)+'</b><small>'+escT([sname(c.s),c.d,c.m,c.c,c.e].filter(Boolean).join(' · '))+'</small></div><span class="rb"><button class="g" data-a="up">▲</button><button class="g" data-a="dn">▼</button><button class="g" data-a="ed">✏️</button><button class="g x" data-a="rm">🗑</button></span></div>'}).join(''):'<p class="s">Todavía no hay casos.</p>'}
+function opRender(){$('op_list').innerHTML=CON.opis.length?'<h3 style="margin:14px 0 8px">Opiniones publicadas ('+CON.opis.length+')</h3>'+CON.opis.map(function(o,i){return '<div class="row" data-i="'+i+'"><span class="stars">'+'★'.repeat(o.e||5)+'</span><div><b>'+escT(o.n)+(o.d?' · '+escT(o.d):'')+'</b><small>«'+escT(o.t)+'»</small></div><span class="rb"><button class="g" data-a="up">▲</button><button class="g" data-a="dn">▼</button><button class="g x" data-a="rm">🗑</button></span></div>'}).join(''):'<p class="s">Todavía no hay opiniones.</p>'}
+function listAct(L,render){return function(e){var b=e.target.closest('button[data-a]');if(!b)return;var i=+b.closest('.row').dataset.i;
+ if(b.dataset.a=='up'&&i>0)L().splice(i-1,0,L().splice(i,1)[0]);if(b.dataset.a=='dn'&&i<L().length-1)L().splice(i+1,0,L().splice(i,1)[0]);
+ if(b.dataset.a=='rm'){if(!confirm('¿Quitar este elemento?'))return;L().splice(i,1)}if(b.dataset.a=='ed'){csEdit(i);return}conDirty(true);render()}}
+$('cs_list').addEventListener('click',listAct(function(){return CON.casos},csRender));
+$('op_list').addEventListener('click',listAct(function(){return CON.opis},opRender));
+var CSF=['cs_t','cs_s','cs_d','cs_m','cs_ma','cs_c','cs_e','cs_x','cs_f'],CSK=['t','s','d','m','ma','c','e','x','f'];
+function csClear(){CSF.forEach(function(id){$(id).value=''});$('cs_s').value=SERV[0][0];$('cs_i').value='';$('cs_ip').innerHTML='';CON.edit=-1;$('cs_add').textContent='➕ Agregar caso';$('cs_cancel').classList.add('hide')}
+function csEdit(i){var c=CON.casos[i];CSF.forEach(function(id,k){$(id).value=c[CSK[k]]||''});CON.edit=i;$('cs_ip').innerHTML=c.img?'<img src="'+csImg(c)+'" alt="" class="pv">':'';$('cs_add').textContent='💾 Actualizar caso';$('cs_cancel').classList.remove('hide');$('cs_form').scrollIntoView({behavior:'smooth'})}
+$('cs_cancel').onclick=csClear;
+$('cs_i').onchange=function(){var f=this.files[0];$('cs_ip').innerHTML=f?'<img src="'+URL.createObjectURL(f)+'" alt="" class="pv">':''};
+$('cs_add').onclick=async function(){var c={};CSF.forEach(function(id,k){var v=$(id).value.replace(/\s+/g,' ').trim();if(v)c[CSK[k]]=v});
+ if(!c.t){alert('Escriba el título del trabajo.');return}
+ var f=$('cs_i').files[0];if(CON.edit>=0&&!f)c.img=CON.casos[CON.edit].img;
+ if(f){var r=await shrink(f,1400),nm='imagenes/casos/'+slug(c.t).replace(/\.[^.]+$/,'')+'-'+Date.now().toString(36)+'.jpg';CON.pend[nm]={blob:r.blob,url:URL.createObjectURL(r.blob)};c.img=nm}
+ if(CON.edit>=0)CON.casos[CON.edit]=c;else CON.casos.unshift(c);csClear();conDirty(true);csRender();msg('cm','Caso listo. Pulse «💾 Guardar cambios» abajo para publicarlo.','w')};
+$('op_add').onclick=function(){var o={n:$('op_n').value.trim(),d:$('op_d').value.trim(),s:$('op_s').value.trim(),e:+$('op_e').value,t:$('op_t').value.replace(/\s+/g,' ').trim(),f:hoy().slice(0,7)};
+ if(!o.n||!o.t){alert('Escriba el nombre del cliente y su opinión.');return}if(!$('op_ok').checked){alert('Marque la casilla confirmando que el cliente le dio permiso para publicar su opinión.');return}
+ Object.keys(o).forEach(function(k){if(o[k]===''||o[k]==null)delete o[k]});CON.opis.unshift(o);['op_n','op_d','op_s','op_t'].forEach(function(id){$(id).value=''});$('op_ok').checked=false;conDirty(true);opRender();msg('cm','Opinión lista. Pulse «💾 Guardar cambios» abajo para publicarla.','w')};
+$('cundo').onclick=function(){if(!confirm('¿Descartar los cambios sin guardar?'))return;conLoad();csClear();msg('cm','')};
+$('cgo').onclick=async function(){$('cgo').disabled=true;msg('cm','⏳ Guardando…','w');
+ try{var used={};CON.casos.forEach(function(c){if(c.img)used[c.img]=1});
+  for(var p in CON.pend){if(!used[p])continue;msg('cm','⏳ Subiendo foto…','w');await putFile(p,CON.pend[p].blob)}
+  var f=await getFile('contenido.js');CON.sha=await putText('contenido.js',conText(),'Actualiza casos de trabajo y opiniones',f.sha);CON.pend={};conDirty(false);csRender();msg('cm','✅ Guardado. Se verá en la página en 1 a 3 minutos.')}
+ catch(e){msg('cm','No se pudo guardar: '+esc(e.message),'e')}$('cgo').disabled=false};
+
+/* ===================== HISTORIAL ===================== */
+var CAPI='https://api.github.com/repos/'+REPO+'/',RAW='https://raw.githubusercontent.com/'+REPO+'/';
+function gha(path,opt){opt=opt||{};opt.headers={Authorization:'Bearer '+TK,Accept:'application/vnd.github+json'};
+ return fetch(CAPI+path,opt).then(function(r){if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){throw new Error(r.status+' '+(j.message||''))});return r.json()})}
+function encPath(p){return p.split('/').map(encodeURIComponent).join('/')}
+function niceMsg(m){m=(m||'').split('\n')[0];return m.length>110?m.slice(0,108)+'…':m}
+async function loadHist(){$('hs').innerHTML='<p class="s">Cargando…</p>';try{var l=await gha('commits?sha='+BR+'&per_page=30');
+ $('hs').innerHTML=l.map(function(c,i){var d=new Date(c.commit.author.date);return '<div class="hrow" data-sha="'+c.sha+'"><div><b>'+escT(niceMsg(c.commit.message))+'</b><small>'+d.toLocaleString('es-PE',{dateStyle:'medium',timeStyle:'short'})+' · '+escT(c.commit.author.name)+(i==0?' · <em>último cambio</em>':'')+'</small><div class="hf"></div></div><span class="rb"><button class="g" data-a="files">📄 Archivos</button><button class="g" data-a="undo">↶ Deshacer</button></span></div>'}).join('')}
+ catch(e){$('hs').innerHTML='<p class="msg e">No se pudo cargar el historial: '+esc(e.message)+'</p>'}}
+$('hs_r').onclick=loadHist;
+$('hs').addEventListener('click',async function(e){var b=e.target.closest('button[data-a]');if(!b)return;var row=b.closest('.hrow'),sha=row.dataset.sha;
+ if(b.dataset.a=='files'){var hf=row.querySelector('.hf');if(hf.innerHTML){hf.innerHTML='';return}hf.innerHTML='Cargando…';try{var c=await gha('commits/'+sha);hf.innerHTML='<ul>'+c.files.map(function(f){return '<li>'+({added:'➕',removed:'➖',modified:'✏️',renamed:'↔️'}[f.status]||'•')+' '+escT(f.filename)+'</li>'}).join('')+'</ul>'}catch(x){hf.innerHTML='Error: '+esc(x.message)}return}
+ if(b.dataset.a=='undo')undoCommit(sha,b)});
+async function undoCommit(sha,b){try{var c=await gha('commits/'+sha);if(!c.parents||!c.parents.length){alert('Este cambio no se puede deshacer.');return}
+ var par=c.parents[0].sha,fs=c.files||[];
+ if(!confirm('¿Deshacer este cambio?\n\n«'+niceMsg(c.commit.message)+'»\n\nArchivos que vuelven a como estaban antes:\n'+fs.slice(0,15).map(function(f){return '• '+f.filename}).join('\n')+(fs.length>15?'\n…':'')+'\n\nOjo: si esos archivos se cambiaron después, esos cambios posteriores también se pierden.'))return;
+ b.disabled=true;var why='Deshace: '+niceMsg(c.commit.message);
+ for(var i=0;i<fs.length;i++){var f=fs[i];msg('hsm','⏳ Deshaciendo '+(i+1)+' de '+fs.length+': '+esc(f.filename),'w');
+  var cur=null;try{cur=await gh(encPath(f.filename)+'?ref='+BR+'&t='+Date.now())}catch(x){if(!/^404/.test(x.message))throw x}
+  if(f.status=='added'){if(cur)await gh(encPath(f.filename),{method:'DELETE',body:JSON.stringify({message:why,sha:cur.sha,branch:BR})});continue}
+  if(f.status=='renamed'){if(cur)await gh(encPath(f.filename),{method:'DELETE',body:JSON.stringify({message:why,sha:cur.sha,branch:BR})});f={filename:f.previous_filename};cur=null;try{cur=await gh(encPath(f.filename)+'?ref='+BR+'&t='+Date.now())}catch(x){}}
+  var r=await fetch(RAW+par+'/'+encPath(f.filename));if(!r.ok)throw new Error('no se encontró la versión anterior de '+f.filename);
+  var body={message:why,content:await toB64(await r.blob()),branch:BR};if(cur&&cur.sha)body.sha=cur.sha;await gh(encPath(f.filename),{method:'PUT',body:JSON.stringify(body)})}
+ msg('hsm','✅ Cambio deshecho. La página vuelve a como estaba en 1 a 3 minutos.');await loadDesc();loadList();loadHist()}
+ catch(e){msg('hsm','No se pudo deshacer: '+esc(e.message),'e')}if(b)b.disabled=false}
 
 </script></body></html>
